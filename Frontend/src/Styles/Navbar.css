@@ -36,7 +36,7 @@
   margin-top: 40px;
 }
 
-.menu li a {
+.menu li {
 
   text-decoration: none;
 
@@ -45,12 +45,12 @@
   font-weight: 600;
 
   transition: 0.3s;
-
+  cursor: pointer;
   font-size: clamp(14px, 1.5vw, 18px);
 }
 
-.navbar a:hover,
-.navbar a.active {
+.navbar li:hover,
+.navbar li.active {
   color: #F09C27;
 }
 

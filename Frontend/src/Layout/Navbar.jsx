@@ -2,44 +2,59 @@ import React from "react";
 import "../Styles/Navbar.css";
 import TechSaarthi from "../assets/TechSaarthi.png";
 
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
+
+  const navigate = useNavigate();
+
   return (
     <nav className="navbar">
 
+      {/* LEFT MENU */}
+
       <ul className="menu left">
-        <li>
-          <a href="/about">About Us</a>
+
+        <li onClick={() => navigate("/about")}>
+          About Us
         </li>
 
-        <li>
-          <a href="/helpline">Helpline</a>
+        <li onClick={() => navigate("/helpline")}>
+          Helpline
         </li>
 
-        <li>
-          <a href="/chatbot">Chatbot</a>
+        <li onClick={() => navigate("/chatbot")}>
+          Chatbot
         </li>
+
       </ul>
 
+      {/* LOGO */}
+
       <div className="box1">
+
         <img
           src={TechSaarthi}
           alt="TechSaarthi Logo"
           className="logo"
         />
+
       </div>
+
+      {/* RIGHT MENU */}
 
       <ul className="menu right">
 
-        <li>
-          <a href="/notice">Notice</a>
+        <li onClick={() => navigate("/notice")}>
+          Notice
         </li>
 
-        <li>
-          <a href="/details">Details</a>
+        <li onClick={() => navigate("/details")}>
+          Details
         </li>
 
-        <li>
-          <a href="/login">Login</a>
+        <li onClick={() => navigate("/UserLogin")}>
+          Login
         </li>
 
       </ul>
