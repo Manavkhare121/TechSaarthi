@@ -15,11 +15,11 @@ const Navbar = () => {
 
       <ul className="menu left">
 
-        <li onClick={() => navigate("/about")}>
+        <li onClick={() => navigate("/About")}>
           About Us
         </li>
 
-        <li onClick={() => navigate("/helpline")}>
+        <li onClick={() => navigate("/CollegeForm")}>
           Helpline
         </li>
 
@@ -45,11 +45,11 @@ const Navbar = () => {
 
       <ul className="menu right">
 
-        <li onClick={() => navigate("/notice")}>
+        <li onClick={() => navigate("/Notice")}>
           Notice
         </li>
 
-        <li onClick={() => navigate("/details")}>
+        <li onClick={() => navigate("/CollegeInfo")}>
           Details
         </li>
 

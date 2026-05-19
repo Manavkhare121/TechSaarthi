@@ -1,0 +1,152 @@
+.notice-container {
+    width: 90%;
+
+    max-width: 1200px;
+
+    min-height: 75vh;
+
+    background-color: white;
+
+    border-radius: 15px;
+
+    margin: 80px auto;
+    display: flex;
+    gap: 20px;
+}
+
+
+/* ================= NOTICE BOX ================= */
+
+.notice-box {
+    flex: 1;
+    border-radius: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* ================= HEADER ================= */
+
+.notice-header {
+    width: 100%;
+
+    background: #F09C27;
+
+    font-weight: 600;
+
+    font-size: 25px;
+
+    /* padding: 5px; */
+
+    border-radius: 10px 10px 0 0;
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    color: black;
+}
+
+.notice-header i {
+    font-size: 2rem;
+}
+
+
+/* ================= ALERT LIST ================= */
+
+.alerts-list {
+    flex: 1;
+
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* ================= ALERT ITEM ================= */
+
+.alert-item {
+    background: #FBFADE;
+
+    border: 1.5px solid black;
+
+    border-radius: 12px;
+
+    padding: 20px 25px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    font-size: 20px;
+
+    font-weight: 400;
+
+    box-sizing: border-box;
+}
+
+
+/* ================= LINKS ================= */
+
+.alert-item a {
+    text-decoration: none;
+
+    color: black;
+
+    font-weight: 600;
+}
+
+.alert-item a:hover {
+    text-decoration: underline;
+}
+
+
+/* ================= TIME ================= */
+
+.alert-time {
+    font-size: 18px;
+
+    color: #333;
+
+    white-space: nowrap;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .notice-container {
+        width: 95%;
+
+        padding: 15px;
+    }
+
+    .notice-header {
+        font-size: 20px;
+    }
+
+    .alert-item {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        font-size: 16px;
+    }
+
+    .alert-time {
+        font-size: 15px;
+    }
+}
