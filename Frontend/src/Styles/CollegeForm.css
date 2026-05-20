@@ -18,7 +18,7 @@
     font-style: italic;
     opacity: 0.7;
     margin-left: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .collegeform-form-wrapper {
@@ -75,12 +75,10 @@
 .collegeform-field h4 {
     font-size: 20px;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
-.collegeform-hostel-section {
-    margin-top: 10px;
-}
+
 
 .collegeform-fees {
     margin-right: 40px;
