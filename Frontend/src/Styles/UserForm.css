@@ -51,6 +51,25 @@
     flex-direction: column;
 }
 
+.college-field select{
+    width: 250px;
+
+    max-width: 400px;
+
+    height: 60px;
+
+    border-radius: 15px;
+
+    border: none;
+
+    background-color: #FBFADE;
+
+    font-size: 18px;
+
+    outline: none;
+
+    padding: 0 15px;
+}
 .college-field h4 {
     font-size: 20px;
 

@@ -55,6 +55,15 @@ const CollegeInfo = () => {
             />
 
           </div>
+           <div className="college-field">
+            <h4>Department Name</h4>
+            <select>
+              <option value="CSE">CSE</option>
+
+              <option value="CSE-DS">CSE-DS</option>
+              <option value="CSE-AIML">CSE-AIML</option>
+            </select>
+          </div> 
 
           {/* BUTTON */}
 
