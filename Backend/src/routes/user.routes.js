@@ -1,11 +1,12 @@
-import express from "express";
+import { Router } from "express";
 
-import { getEligibleColleges } from "../controller/user.controller.js";
+import {
+  getEligibleColleges,
+} from "../controller/user.controller.js";
 
-const router = express.Router();
+const router = Router();
 
-router.post(
-  "/eligible-colleges",
+router.route("/eligible-colleges").post(
   getEligibleColleges
 );
 

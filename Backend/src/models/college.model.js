@@ -3,7 +3,6 @@
 import mongoose from "mongoose";
 
 const collegeSchema = new mongoose.Schema(
-
   {
     // College Information
 
@@ -97,6 +96,10 @@ const collegeSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    rank: {
+      type: Number,
+      default: 0,
+    },
 
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -108,10 +111,6 @@ const collegeSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-
 );
 
-export const College = mongoose.model(
-  "College",
-  collegeSchema
-);
+export const College = mongoose.model("College", collegeSchema);

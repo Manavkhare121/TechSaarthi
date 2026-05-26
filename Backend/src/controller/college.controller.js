@@ -1,6 +1,8 @@
-// controllers/college.controller.js
-
 import { College } from "../models/college.model.js";
+
+
+
+// Create College
 
 const createCollege = async (req, res) => {
 
@@ -82,4 +84,54 @@ const createCollege = async (req, res) => {
 
 };
 
-export { createCollege };
+
+
+// Get My College Details
+
+const getMyCollegeDetails = async (req, res) => {
+
+  try {
+
+    const college = await College.findOne({
+
+      createdBy: req.user._id,
+
+    });
+
+    if (!college) {
+
+      return res.status(404).json({
+
+        success: false,
+
+        message: "College not found",
+
+      });
+
+    }
+
+    return res.status(200).json({
+
+      success: true,
+
+      college,
+
+    });
+
+  } catch (error) {
+
+    return res.status(500).json({
+
+      success: false,
+      message: error.message,
+
+    });
+
+  }
+
+};
+
+export {
+  createCollege,
+  getMyCollegeDetails,
+};

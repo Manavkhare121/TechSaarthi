@@ -1,35 +1,19 @@
-// controllers/government.controller.js
-
 import { College } from "../models/college.model.js";
 
-const verifyCollege = async (req, res) => {
+
+// Get All Colleges
+
+const getAllColleges = async (req, res) => {
 
   try {
 
-    const { collegeId } = req.params;
-
-    const college = await College.findByIdAndUpdate(
-
-      collegeId,
-
-      {
-        verified: true,
-        verificationDate: new Date(),
-      },
-
-      {
-        new: true,
-      }
-
-    );
+    const colleges = await College.find();
 
     return res.status(200).json({
 
       success: true,
 
-      message: "College verified successfully",
-
-      college,
+      colleges,
 
     });
 
@@ -46,4 +30,69 @@ const verifyCollege = async (req, res) => {
 
 };
 
-export { verifyCollege };
+
+
+// Verify and Update College
+
+const verifyCollege = async (req, res) => {
+
+  try {
+
+    const { collegeId } = req.params;
+
+    const {
+
+      verified,
+      verificationDate,
+      performanceScore,
+      rank,
+
+    } = req.body;
+
+    const college = await College.findByIdAndUpdate(
+
+      collegeId,
+
+      {
+        verified,
+        verificationDate,
+        performanceScore,
+        rank,
+      },
+
+      {
+        new: true,
+      }
+
+    );
+
+    return res.status(200).json({
+
+      success: true,
+
+      message: "College updated successfully",
+
+      updatedCollege: college,
+
+    });
+
+  } catch (error) {
+
+    return res.status(500).json({
+
+      success: false,
+      message: error.message,
+
+    });
+
+  }
+
+};
+
+export {
+
+  getAllColleges,
+
+  verifyCollege,
+
+};

@@ -1,11 +1,27 @@
-import express from "express";
+import { Router } from "express";
 
-import { verifyCollege } from "../controller/government.controller.js";
+import {
 
-const router = express.Router();
+  getAllColleges,
+  verifyCollege,
 
-router.patch(
-  "/verify-college/:collegeId",
+} from "../controller/government.controller.js";
+
+import {
+  verifyJWT,
+} from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+router.route("/all-colleges").get(
+  verifyJWT,
+  getAllColleges
+);
+
+
+
+router.route("/verify-college/:collegeId").patch(
+  verifyJWT,
   verifyCollege
 );
 

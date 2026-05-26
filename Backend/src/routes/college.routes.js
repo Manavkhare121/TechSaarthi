@@ -1,12 +1,30 @@
-import express from "express";
+import { Router } from "express";
 
-import { createCollege } from "../controller/college.controller.js";
+import {
 
-const router = express.Router();
+  createCollege,
+  getMyCollegeDetails,
 
-router.post(
-  "/create-college",
+} from "../controller/college.controller.js";
+
+import {
+  verifyJWT,
+} from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+
+
+
+router.route("/create-college").post(
+  verifyJWT,
   createCollege
+);
+
+
+router.route("/my-college").get(
+  verifyJWT,
+  getMyCollegeDetails
 );
 
 export default router;
