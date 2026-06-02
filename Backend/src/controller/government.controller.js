@@ -1,8 +1,5 @@
 import { College } from "../models/college.model.js";
 
-
-// Get All Colleges
-
 const getAllColleges = async (req, res) => {
 
   try {

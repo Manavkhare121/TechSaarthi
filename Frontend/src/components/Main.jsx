@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "../Layout/Navbar.jsx";
-
+import { useNavigate } from "react-router-dom";
 import "../Styles/Main.css";
 
 import MainImage from "../assets/MainImage.png";
 
 const Main = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Navbar />
@@ -43,7 +44,7 @@ const Main = () => {
 
             <div className="main-btn-box">
 
-              <button className="main-btn">
+              <button className="main-btn" onClick={() => navigate("/Userlogin")}>
                 Get Started
               </button>
 

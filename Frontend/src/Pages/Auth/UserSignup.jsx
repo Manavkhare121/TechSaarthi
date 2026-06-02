@@ -1,16 +1,48 @@
 import React from "react";
 import "../../Styles/UserSignup.css";
-
 import SignupCartoon from "../../assets/SignupCartoon.png";
 import GoogleLogo from "../../assets/GoogleLogo.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Usersignup = () => {
   const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const firstName = e.target.firstName.value;
+    const lastName = e.target.lastName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const role = e.target.role.value;
+    const username = (firstName + lastName).toLowerCase();
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/auth/register`,
+        {
+          username,
+          email,
+          password,
+          role,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data);
+      navigate("/Userlogin");
+    } catch (error) {
+      console.error("Signup Error:", error.response?.data || error.message);
+    }
+  };
+
   return (
     <div className="usersignup-page">
       <div className="usersignup-container">
-        {/* LEFT IMAGE SECTION */}
-
         <div className="usersignup-box1">
           <img
             src={SignupCartoon}
@@ -19,62 +51,49 @@ const Usersignup = () => {
           />
         </div>
 
-        {/* RIGHT FORM SECTION */}
-
         <div className="usersignup-box2">
           <div className="usersignup-login">
             <h3>SIGN UP</h3>
-
             <p>
               Let’s get you all set up so you can access your personal account.
             </p>
           </div>
 
-          {/* NAME ROW */}
+          <form onSubmit={handleSubmit}>
+            <div className="usersignup-name-row">
+              <div className="usersignup-fullname">
+                <input type="text" name="firstName" placeholder="First Name" required />
+              </div>
 
-          <div className="usersignup-name-row">
-            <div className="usersignup-fullname">
-              <input type="text" placeholder="First Name" />
+              <div className="usersignup-lastname">
+                <input type="text" name="lastName" placeholder="Last Name" required />
+              </div>
             </div>
 
-            <div className="usersignup-lastname">
-              <input type="text" placeholder="Last Name" />
+            <div className="usersignup-input-box">
+              <input type="email" name="email" placeholder="Email" required />
             </div>
-          </div>
 
-          {/* EMAIL */}
+            <div className="usersignup-input-box">
+              <input type="password" name="password" placeholder="Password" required />
+            </div>
+            
+            <div className="usersignup-input-box">
+              <select name="role">
+                <option value="user">User</option>
+                <option value="college">College</option>
+                <option value="government">Government</option>
+              </select>
+            </div>
 
-          <div className="usersignup-input-box">
-            <input type="email" placeholder="Email" />
-          </div>
+            <div className="usersignup-option">
+              <label className="usersignup-remember">
+                <input type="checkbox" required />I agree to the Terms and Privacy Policies
+              </label>
+            </div>
 
-          {/* PASSWORD */}
-
-          <div className="usersignup-input-box">
-            <input type="password" placeholder="Password" />
-          </div>
-          <div className="usersignup-input-box">
-            <select>
-              <option value="user">User</option>
-
-              <option value="college">College</option>
-              <option value="college">Government</option>
-            </select>
-          </div>
-
-          {/* TERMS */}
-
-          <div className="usersignup-option">
-            <label className="usersignup-remember">
-              <input type="checkbox" />I agree to the Terms and Privacy Policies
-            </label>
-          </div>
-
-          {/* BUTTON */}
-
-          <button className="usersignup-btn">Create Account</button>
-
-          {/* LOGIN */}
+            <button type="submit" className="usersignup-btn">Create Account</button>
+          </form>
 
           <div className="usersignup-sign-up">
             <p>
@@ -83,15 +102,11 @@ const Usersignup = () => {
             </p>
           </div>
 
-          {/* OR SIGNUP WITH */}
-
           <div className="usersignup-login-with">
             <p>
               <span>Or signup with</span>
             </p>
           </div>
-
-          {/* GOOGLE BUTTON */}
 
           <button className="usersignup-btn2">
             <img

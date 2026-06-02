@@ -12,7 +12,6 @@ const Verification = () => {
 
         <div className="verification-form-wrapper">
 
-          {/* LEFT SIDE */}
 
           <div className="verification-form-field1">
 

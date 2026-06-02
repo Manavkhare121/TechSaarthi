@@ -2,9 +2,6 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
-// import { User } from "../models/user.model.js";
-// import { Counsellor } from "../models/counsellor.models.js";
-// import { Admin } from "../models/admin.model.js";
 // import { generateResponse, generateVectors } from "../services/ai.service.js";
 // import { messageModel } from "../models/message.model.js";
 // import { createMemory, queryMemory } from "../services/vector.service.js";
@@ -137,96 +134,7 @@ function initSocketServer(httpServer) {
   //     });
   //   });
 
-  //   // ✅ FIXED: socket.server.js - join-chat aur send-message
-  //   socket.on("join-chat", async (chatId) => {
-  //     try {
-  //       // 🚨 YEH HAI WOH MAGIC CODE JO CRASH ROKEGA 🚨
-  //       if (!mongoose.Types.ObjectId.isValid(chatId)) {
-  //         console.log("Frontend sent an invalid ID. Ignoring to prevent crash:", chatId);
-  //         return; 
-  //       }
-
-  //       const chat = await chatmodel.findById(chatId);
-  //       if (!chat) {
-  //         console.log("Chat not found:", chatId);
-  //         return;
-  //       }
-
-  //       const currentUser = socket.user || socket.counsellor || socket.admin;
-  //       const currentId = currentUser?._id;
-
-  //       if (!currentId) {
-  //         console.log("No user on socket");
-  //         return;
-  //       }
-
-  //       const isUserInChat = chat.users.some(
-  //         (id) => id.toString() === currentId.toString()
-  //       );
-
-  //       if (!isUserInChat) {
-  //         console.log("Access Denied for:", currentId);
-  //         return;
-  //       }
-
-  //       socket.join(chatId.toString());
-  //       console.log(`${socket.role} ${currentId} joined room: ${chatId}`);
-
-  //       const chatHistory = await messageModel
-  //         .find({ chat: chatId })
-  //         .sort({ createdAt: 1 });
-        
-  //       socket.emit("chat-history", chatHistory);
-
-  //     } catch (err) {
-  //       console.error("Join Chat Error:", err);
-  //     }
-  //   });
-
-  //   socket.on("send-message", async (payload) => {
-  //     try {
-  //       const chat = await chatmodel.findById(payload.chat);
-  //       if (!chat) {
-  //         console.log("Chat not found for sending message");
-  //         return;
-  //       }
-
-  //       const currentId = (socket.user || socket.counsellor || socket.admin)?._id;
-
-  //       const isUserInChat = chat.users.some(
-  //         (id) => id.toString() === currentId.toString()
-  //       );
-
-  //       if (!isUserInChat) {
-  //         console.log("Not allowed to send message here");
-  //         return;
-  //       }
-
-  //       // ✅ Tumhare naye messageSchema ke hisaab se senderModel nikalna zaroori hai
-  //       const senderModel =
-  //         socket.role === "user"
-  //           ? "User"
-  //           : socket.role === "counsellor"
-  //           ? "Counsellor"
-  //           : "Admin";
-
-  //       // ✅ DB mein message save karo
-  //       const message = await messageModel.create({
-  //         chat: payload.chat,
-  //         sender: currentId,
-  //         senderModel: senderModel, 
-  //         content: payload.content,
-  //         role: socket.role, 
-  //       });
-
-  //       // ✅ Room mein baithe DONO logon ko (User aur Counsellor) message bhej do!
-  //       io.to(payload.chat.toString()).emit("receive-message", message);
-
-  //     } catch (err) {
-  //       console.error("Send Message Error:", err);
-  //     }
-  //   });
-  // });
+  
 }
 
 export default initSocketServer;
