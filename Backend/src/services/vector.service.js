@@ -4,14 +4,14 @@ const pc = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY,
 });
 
-const chatgptIndex = pc.Index("chatgpt");
+const techsarthiIndex = pc.Index("techsarthi");
 
 async function createMemory({ vectors, metadata = {}, messageId }) {
   if (!vectors || !Array.isArray(vectors) || vectors.length === 0) {
     return;
   }
 
-  await chatgptIndex.upsert({
+  await techsarthiIndex.upsert({
     records: [
       {
         id: String(messageId),
@@ -27,7 +27,7 @@ async function queryMemory({ queryVector, limit = 5, metadata }) {
     return [];
   }
 
-  const data = await chatgptIndex.query({
+  const data = await techsarthiIndex.query({
     vector: queryVector,
     topK: limit,
     filter: metadata?metadata:undefined,
