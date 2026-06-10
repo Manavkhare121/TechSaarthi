@@ -6,7 +6,7 @@ const Chatbot = () => {
   return (
     <>
 
-      <Navbar />
+      
 
       <div className="chatpage-main-layout">
 

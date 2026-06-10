@@ -5,7 +5,6 @@ import "../../Styles/CollegeForm.css";
 const CollegeForm = () => {
   return (
     <>
-      <Navbar />
 
       <div className="collegeform-container">
 

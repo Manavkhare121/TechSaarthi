@@ -2,7 +2,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Auth } from "../models/auth.model.js";
-
+import jwt from "jsonwebtoken"
+import redisClient from "../services/redis.service.js";
 const generateAccessandRefreshToken = async (userId) => {
 
   try {
@@ -128,18 +129,43 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutuser = asyncHandler(async (req, res) => {
+  const accessToken =
+    req.cookies?.accessToken ||
+    req.header("Authorization")
+      ?.replace("Bearer ", "")
+      .trim();
 
   await Auth.findByIdAndUpdate(
     req.user._id,
     {
       $unset: {
-        refreshToken: "",
+        refreshToken: 1,
       },
     },
     {
       new: true,
     }
   );
+
+  // Blacklist token in Redis
+  if (accessToken) {
+    const decoded = jwt.decode(accessToken);
+
+    if (decoded?.exp) {
+      const expiryTime =
+        decoded.exp -
+        Math.floor(Date.now() / 1000);
+
+      if (expiryTime > 0) {
+        await redisClient.set(
+          accessToken,
+          "blacklisted",
+          "EX",
+          expiryTime
+        );
+      }
+    }
+  }
 
   const options = {
     httpOnly: true,
@@ -154,11 +180,10 @@ const logoutuser = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         {},
-        "User logged out"
+        "User logged out successfully"
       )
     );
 });
-
 export {
   generateAccessandRefreshToken,
   registerUser,

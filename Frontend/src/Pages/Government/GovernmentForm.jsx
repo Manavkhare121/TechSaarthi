@@ -5,7 +5,6 @@ import Navbar from "../../Layout/Navbar.jsx";
 const Verification = () => {
   return (
     <>
-    <Navbar/>
       <div className="verification-container">
 
         <h3>Verification</h3>

@@ -9,7 +9,6 @@ const Main = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Navbar />
       <div className="main-page">
 
         <div className="main-img2-container">

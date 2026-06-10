@@ -7,7 +7,7 @@ import Notification from "../assets/Notificationimage.png"
 const Notice = () => {
   return (
     <>
-      <Navbar />
+      
 
       <div className="notice-container">
 

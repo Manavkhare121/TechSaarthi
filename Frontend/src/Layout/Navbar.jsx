@@ -22,7 +22,7 @@ const Navbar = ({ role, setRole }) => {
     } else if (role === "government") {
       navigate("/GovernmentForm");
     } else {
-      navigate("/UserLogin");
+      navigate("/About");
     }
   };
 

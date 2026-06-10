@@ -7,7 +7,7 @@ import "../../Styles/UserForm.css";
 const CollegeInfo = () => {
   return (
     <>
-      <Navbar />
+ 
 
       <div className="college-container">
 

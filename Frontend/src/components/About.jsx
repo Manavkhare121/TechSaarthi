@@ -7,7 +7,6 @@ import About2 from "../assets/about2.png";
 const About = () => {
   return (
     <>
-      <Navbar />
 
       <div className="about-container">
         <div className="about-img-wrapper">
