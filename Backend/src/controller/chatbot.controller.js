@@ -1,49 +1,80 @@
 import { chatmodel } from "../models/chat.model.js";
-import {messageModel} from "../models/message.model.js"
-async function createchat(req,res) {
-    const {title}=req.body
-    const user=req.user
-    const chat=await chatmodel.create({
-        user:user._id,
-        title
-    });
-    res.status(201).json({
-        message:"Chat created successfully",
-        chat:{
-            _id:chat._id,
-            title:chat.title,
-            lastActivity:chat.lastActivity
-        }
-    })
-}
+import { messageModel } from "../models/message.model.js";
 
-async function getChats(req, res) {
-    const user = req.user;
+import { asyncHandler } from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
-    const chats = await chatmodel.find({ user: user._id });
+const createchat = asyncHandler(async (req, res) => {
+  const { title } = req.body;
 
-    res.status(200).json({
-        message: "Chats retrieved successfully",
-        chats: chats.map(chat => ({
-            _id: chat._id,
-            title: chat.title,
-            lastActivity: chat.lastActivity,
-            user: chat.user
-        }))
-    });
-}
+  if (!title) {
+    throw new ApiError(400, "Chat title is required");
+  }
 
-async function getMessages(req, res) {
+  const user = req.user;
 
-    const chatId = req.params.id;
+  const chat = await chatmodel.create({
+    user: user._id,
+    title,
+  });
 
-    const messages = await messageModel.find({ chat: chatId }).sort({ createdAt: 1 });
+  if (!chat) {
+    throw new ApiError(500, "Failed to create chat");
+  }
 
-    res.status(200).json({
-        message: "Messages retrieved successfully",
-        messages: messages
-    })
+  return res.status(201).json(
+    new ApiResponse(
+      201,
+      {
+        _id: chat._id,
+        title: chat.title,
+        lastActivity: chat.lastActivity,
+      },
+      "Chat created successfully"
+    )
+  );
+});
 
-}
+const getChats = asyncHandler(async (req, res) => {
+  const user = req.user;
 
-export {createchat,getMessages,getChats}
+  const chats = await chatmodel.find({
+    user: user._id,
+  });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      chats.map((chat) => ({
+        _id: chat._id,
+        title: chat.title,
+        lastActivity: chat.lastActivity,
+        user: chat.user,
+      })),
+      "Chats retrieved successfully"
+    )
+  );
+});
+
+const getMessages = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+
+  const messages = await messageModel
+    .find({ chat: chatId })
+    .sort({ createdAt: 1 });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      messages,
+      "Messages retrieved successfully"
+    )
+  );
+});
+
+export {
+  createchat,
+  getChats,
+  getMessages,
+};

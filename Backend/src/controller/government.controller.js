@@ -1,95 +1,60 @@
 import { College } from "../models/college.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
-const getAllColleges = async (req, res) => {
+const getAllColleges = asyncHandler(async (req, res) => {
+  const colleges = await College.find();
 
-  try {
-
-    const colleges = await College.find();
-
-    return res.status(200).json({
-
-      success: true,
-
+  return res.status(200).json(
+    new ApiResponse(
+      200,
       colleges,
+      "All colleges fetched successfully"
+    )
+  );
+});
 
-    });
+const verifyCollege = asyncHandler(async (req, res) => {
+  const { collegeId } = req.params;
 
-  } catch (error) {
+  const {
+    verified,
+    verificationDate,
+    performanceScore,
+    rank,
+  } = req.body;
 
-    return res.status(500).json({
+  const college = await College.findById(collegeId);
 
-      success: false,
-      message: error.message,
-
-    });
-
+  if (!college) {
+    throw new ApiError(404, "College not found");
   }
 
-};
-
-
-
-// Verify and Update College
-
-const verifyCollege = async (req, res) => {
-
-  try {
-
-    const { collegeId } = req.params;
-
-    const {
-
+  const updatedCollege = await College.findByIdAndUpdate(
+    collegeId,
+    {
       verified,
       verificationDate,
       performanceScore,
       rank,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
-    } = req.body;
-
-    const college = await College.findByIdAndUpdate(
-
-      collegeId,
-
-      {
-        verified,
-        verificationDate,
-        performanceScore,
-        rank,
-      },
-
-      {
-        new: true,
-      }
-
-    );
-
-    return res.status(200).json({
-
-      success: true,
-
-      message: "College updated successfully",
-
-      updatedCollege: college,
-
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-
-      success: false,
-      message: error.message,
-
-    });
-
-  }
-
-};
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      updatedCollege,
+      "College updated successfully"
+    )
+  );
+});
 
 export {
-
   getAllColleges,
-
   verifyCollege,
-
 };

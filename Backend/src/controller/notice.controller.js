@@ -1,143 +1,55 @@
-import { Notice }
-from "../models/notice.model.js";
+import { Notice } from "../models/notice.model.js";
+import { uploadOnCloudinary } from "../services/cloudinary.service.js";
 
-import {
-  uploadOnCloudinary,
-}
-from "../services/cloudinary.service.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
-const uploadNotice = async (
-  req,
-  res
-) => {
 
-  try {
+const uploadNotice = asyncHandler(async (req, res) => {
+  const { title } = req.body;
 
-    const { title } = req.body;
+  const localFilePath = req.file?.path;
 
-    // File Path
+  if (!localFilePath) {
+    throw new ApiError(400, "Document file is required");
+  }
 
-    const localFilePath =
-      req.file?.path;
-    if (!localFilePath) {
+  const uploadedFile = await uploadOnCloudinary(localFilePath);
 
-      return res.status(400).json({
+  if (!uploadedFile) {
+    throw new ApiError(500, "File upload failed");
+  }
 
-        success: false,
+  const notice = await Notice.create({
+    title,
+    document: uploadedFile.secure_url,
+    uploadedBy: req.user._id,
+  });
 
-        message:
-          "Document file is required",
-
-      });
-
-    }
-
-    // Upload to Cloudinary
-
-    const uploadedFile =
-      await uploadOnCloudinary(
-        localFilePath
-      );
-
-    if (!uploadedFile) {
-
-      return res.status(500).json({
-
-        success: false,
-
-        message:
-          "File upload failed",
-
-      });
-
-    }
-
-    // Save Notice
-
-    const notice =
-      await Notice.create({
-
-        title,
-
-        document:
-          uploadedFile.secure_url,
-
-        uploadedBy:
-          req.user._id,
-
-      });
-
-    return res.status(201).json({
-
-      success: true,
-
-      message:
-        "Notice uploaded successfully",
-
+  return res.status(201).json(
+    new ApiResponse(
+      201,
       notice,
+      "Notice uploaded successfully"
+    )
+  );
+});
 
-    });
+const getAllNotices = asyncHandler(async (req, res) => {
+  const notices = await Notice.find()
+    .sort({ createdAt: -1 });
 
-  } catch (error) {
-
-    return res.status(500).json({
-
-      success: false,
-
-      message:
-        error.message,
-
-    });
-
-  }
-
-};
-
-
-
-// Get All Notices
-
-const getAllNotices = async (
-  req,
-  res
-) => {
-
-  try {
-
-    const notices =
-      await Notice.find()
-
-      .sort({
-        createdAt: -1,
-      });
-
-    return res.status(200).json({
-
-      success: true,
-
+  return res.status(200).json(
+    new ApiResponse(
+      200,
       notices,
-
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-
-      success: false,
-
-      message:
-        error.message,
-
-    });
-
-  }
-
-};
+      "Notices fetched successfully"
+    )
+  );
+});
 
 export {
-
   uploadNotice,
-
   getAllNotices,
-
 };
