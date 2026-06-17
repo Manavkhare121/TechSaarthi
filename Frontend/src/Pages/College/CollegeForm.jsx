@@ -14,7 +14,6 @@ const CollegeForm = () => {
 
         <div className="collegeform-form-wrapper">
 
-          {/* ROW 1 */}
 
           <div className="collegeform-row">
 
@@ -44,7 +43,6 @@ const CollegeForm = () => {
 
           </div>
 
-          {/* ROW 2 */}
 
           <div className="collegeform-row">
 
@@ -74,7 +72,6 @@ const CollegeForm = () => {
 
           </div>
 
-          {/* ROW 3 */}
 
           <div className="collegeform-row">
 
@@ -104,8 +101,7 @@ const CollegeForm = () => {
 
           </div>
 
-          {/* HOSTEL INFO */}
-
+          
           <h3 className="collegeform-hostel-info">
             Hostel Information
           </h3>

@@ -11,6 +11,7 @@ const getEligibleColleges = asyncHandler(async (req, res) => {
     preferredDepartment,
   } = req.body;
 
+  // Validation
   if (
     jeePercentile === undefined ||
     cuetPercentile === undefined ||
@@ -23,13 +24,34 @@ const getEligibleColleges = asyncHandler(async (req, res) => {
     );
   }
 
+  // Frontend Department -> Database Department Mapping
+  const departmentMap = {
+    CSE: "Computer Science",
+    "CSE-DS": "Computer Science DS",
+    "CSE-AIML": "Computer Science AIML",
+  };
+
+  const actualDepartment =
+    departmentMap[preferredDepartment] || preferredDepartment;
+
+  console.log("Received Data:", {
+    jeePercentile,
+    cuetPercentile,
+    class12Marks,
+    preferredDepartment,
+    actualDepartment,
+  });
+
+  // Find eligible colleges
   const colleges = await College.find({
     verified: true,
-    departmentName: preferredDepartment,
-    jeeCutoff: { $lte: jeePercentile },
-    cuetCutoff: { $lte: cuetPercentile },
-    class12Cutoff: { $lte: class12Marks },
+    departmentName: actualDepartment,
+    jeeCutoff: { $lte: Number(jeePercentile) },
+    cuetCutoff: { $lte: Number(cuetPercentile) },
+    class12Cutoff: { $lte: Number(class12Marks) },
   });
+
+  console.log("Matched Colleges:", colleges);
 
   return res.status(200).json(
     new ApiResponse(

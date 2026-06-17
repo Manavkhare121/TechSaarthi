@@ -5,11 +5,13 @@ import {
   generateResponse,
   generateVectors,
   extractCollegeCriteria,
+  detectLanguage,         // ← new import
 } from "../services/ai.service.js";
 import { messageModel } from "../models/message.model.js";
 import { createMemory, queryMemory } from "../services/vector.service.js";
 import { Auth } from "../models/auth.model.js";
 import { College } from "../models/college.model.js";
+import { chatmodel } from "../models/chat.model.js";   // ← new import
 
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {
@@ -20,7 +22,7 @@ function initSocketServer(httpServer) {
     },
   });
 
-  // Auth middleware
+
   io.use(async (socket, next) => {
     const cookies = cookie.parse(socket.handshake.headers?.cookie || "");
     const token =
@@ -49,6 +51,7 @@ function initSocketServer(httpServer) {
     }
   });
 
+  
   io.on("connection", (socket) => {
     console.log("[TechSaarthi] User connected:", socket.user._id.toString());
 
@@ -56,8 +59,7 @@ function initSocketServer(httpServer) {
       try {
         console.log("[TechSaarthi] Message received:", messagePayload.content);
 
-        // Step 1: Save user message + generate vectors — parallel
-        const [message, vectors] = await Promise.all([
+        const [message, vectors, langResult] = await Promise.all([
           messageModel.create({
             chat: messagePayload.chat,
             user: socket.user._id,
@@ -65,9 +67,17 @@ function initSocketServer(httpServer) {
             role: "user",
           }),
           generateVectors(messagePayload.content),
+          detectLanguage(messagePayload.content),  
         ]);
 
-        // Step 2: Store in Pinecone
+        const detectedLanguage = langResult.language;
+        console.log("[TechSaarthi] Detected language:", detectedLanguage);
+
+        await chatmodel.findByIdAndUpdate(messagePayload.chat, {
+          preferredLanguage: detectedLanguage,
+          lastActivity: new Date(),
+        });
+
         await createMemory({
           vectors,
           messageId: message._id,
@@ -78,18 +88,15 @@ function initSocketServer(httpServer) {
           },
         });
 
-        // Step 3: Detect if this is a college search query
         const criteria = await extractCollegeCriteria(messagePayload.content);
 
         let response;
 
         if (criteria.isCollegeQuery) {
-          // ── COLLEGE SEARCH FLOW ──────────────────────────────
-
-          // Step 4A: Query MongoDB for matching colleges
+         
           const matchingColleges = await College.findMatchingColleges(criteria);
 
-          // Step 5A: Build context string from DB results
+          
           let collegeContext = "";
 
           if (matchingColleges.length > 0) {
@@ -170,13 +177,11 @@ Instructions:
               .then((msgs) => msgs.reverse()),
           ]);
 
-          
           const stm = chathistory.map((item) => ({
             role: item.role,
             parts: [{ text: item.content }],
           }));
 
-          
           const collegeContextMessage = {
             role: "user",
             parts: [
@@ -186,10 +191,14 @@ Instructions:
             ],
           };
 
-          response = await generateResponse([collegeContextMessage, ...stm]);
+        
+          response = await generateResponse(
+            [collegeContextMessage, ...stm],
+            detectedLanguage 
+          );
 
         } else {
-          
+  
           const [memory, chathistory] = await Promise.all([
             queryMemory({
               queryVector: vectors,
@@ -204,7 +213,6 @@ Instructions:
               .then((msgs) => msgs.reverse()),
           ]);
 
-          
           const stm = chathistory.map((item) => ({
             role: item.role,
             parts: [{ text: item.content }],
@@ -223,16 +231,19 @@ Instructions:
             },
           ];
 
-          response = await generateResponse([...ltm, ...stm]);
+  
+          response = await generateResponse(
+            [...ltm, ...stm],
+            detectedLanguage   // ← language passed here
+          );
         }
 
-        
         socket.emit("ai-response", {
           content: response,
           chat: messagePayload.chat,
+          language: detectedLanguage,  
         });
 
-    
         const [responseMessage, responseVectors] = await Promise.all([
           messageModel.create({
             chat: messagePayload.chat,
@@ -243,7 +254,6 @@ Instructions:
           generateVectors(response),
         ]);
 
-        
         await createMemory({
           vectors: responseVectors,
           messageId: responseMessage._id,
