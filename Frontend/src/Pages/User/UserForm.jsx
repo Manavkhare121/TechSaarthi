@@ -65,7 +65,7 @@ setColleges(response.data.data);
             />
           </div>
 
-          {/* CUET */}
+          
           <div className="college-field">
             <h4>CUET Percentile</h4>
             <input
@@ -77,7 +77,7 @@ setColleges(response.data.data);
             />
           </div>
 
-          {/* 12th MARKS */}
+          
           <div className="college-field">
             <h4>12th Marks</h4>
             <input
@@ -102,7 +102,7 @@ setColleges(response.data.data);
             </select>
           </div>
 
-          {/* BUTTON */}
+          
           <button className="college-btn" onClick={handleSearch}>
             Search
           </button>
