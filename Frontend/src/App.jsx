@@ -22,7 +22,7 @@ function App() {
   const location = useLocation(); 
 
   // ✨ FOOLPROOF FIX: Sab paths ko lowercase mein daalein
-  const hideNavbarPaths = ["/userlogin", "/usersignup"];
+  const hideNavbarPaths = ["/userlogin", "/usersignup","/"];
   
   // Current URL ko bhi lowercase karke check karein
   const currentPath = location.pathname.toLowerCase();

@@ -73,6 +73,27 @@ const getMessages = asyncHandler(async (req, res) => {
   );
 });
 
+async function deleteChat(req, res) {
+    const chatId = req.params.id;
+    const userId = req.user._id;
+
+    try {
+        const chat = await chatmodel.findById(chatId);
+        if (!chat) return res.status(404).json({ message: "Chat not found" });
+
+        // Broken chats (empty users) or owner can delete
+        const isOwner = chat.users.length === 0 || chat.users.includes(userId);
+        if (!isOwner) return res.status(403).json({ message: "Unauthorized" });
+
+        await messageModel.deleteMany({ chat: chatId });
+        await chatmodel.findByIdAndDelete(chatId);
+
+        res.status(200).json({ message: "Deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
 export {
   createchat,
   getChats,

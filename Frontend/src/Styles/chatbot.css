@@ -1,134 +1,157 @@
 /* ================= MAIN LAYOUT ================= */
 
 .chatpage-main-layout {
-
   display: flex;
-
   gap: 20px;
   width: 100%;
-
-
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ================= CONTAINER ================= */
 
 .chatpage-container {
-
   width: 90%;
-
   max-width: 1400px;
-
-  min-height: 72vh;
-
+  height: calc(100vh - 120px);
   background-color: white;
-
   border-radius: 15px;
-
   margin: 80px 0 20px 20px;
-
   padding: 10px;
-
   display: flex;
-
   gap: 20px;
 }
 
 /* ================= CHAT BOX ================= */
 
 .chatpage-chat-box {
-
   flex: 1;
-
   border-radius: 10px;
-
   display: flex;
-
   flex-direction: column;
-
   overflow: hidden;
 }
 
 /* ================= SIDEBAR ================= */
 
 .chatpage-sidebar {
-
   flex: 0 0 250px;
-
   max-width: 280px;
-
-  height: 72vh;
-
+  height: calc(100vh - 120px);
   background: white;
-
   border-radius: 10px;
-
   padding: 20px;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 15px;
-
   margin: 80px 20px 0 0;
+}
+
+/* ================= SIDEBAR CHAT LIST ================= */
+
+.chatpage-chat-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.chatpage-chat-item {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+  font-weight: normal;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatpage-chat-item.active {
+  background-color: #F09C27;
+  font-weight: bold;
+}
+
+.chatpage-delete-icon {
+  cursor: pointer;
+  color: #d9534f;
+  transition: color 0.2s ease-in-out;
+}
+
+.chatpage-delete-icon:hover {
+  color: #c9302c;
 }
 
 /* ================= MESSAGES ================= */
 
 .chatpage-messages {
-
   flex: 1;
-
   padding: 20px;
-
   overflow-y: auto;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 15px;
+  
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chatpage-messages::-webkit-scrollbar {
+  display: none;
 }
 
 /* ================= MESSAGE BUBBLE ================= */
 
 .chatpage-message {
-
   max-width: 60%;
-
   padding: 12px 18px;
-
   border-radius: 15px;
-
   font-size: 16px;
-
   word-wrap: break-word;
 }
 
+.chatpage-message p {
+  margin: 0;
+}
+
+.chatpage-message pre {
+  background-color: #2d2d2d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+.chatpage-message code {
+  background-color: rgba(0,0,0,0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.chatpage-message pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
 .chatpage-message.user {
-
   align-self: flex-end;
-
   background-color: #F09C27;
-
   color: black;
 }
 
 .chatpage-message.bot {
-
   align-self: flex-start;
-
   background-color: #f1f1f1;
-
   color: black;
 }
 
 /* ================= INPUT BAR ================= */
 
 .chatpage-input-bar {
-
   display: flex;
-
   align-items: center;
   height: 60px;
   width: 100%;
@@ -138,124 +161,89 @@
 }
 
 .chatpage-input-bar input {
-
   height: 40px;
-width: 100%;
+  width: 100%;
   border: none;
-
   outline: none;
-
   border-radius: 8px;
-
   font-size: 18px;
   background-color: #F09C27;
 }
 
 .chatpage-input-bar input::placeholder {
-
   color: black;
 }
 
 /* ================= SEND BUTTON ================= */
 
 .chatpage-input-bar button {
-
   margin-left: 10px;
-
   height: 40px;
-
   width: 50px;
-
   background-color: #F09C27;
-
   border: none;
-
   cursor: pointer;
 }
 
 .chatpage-input-bar button i {
-
   color: black;
-
   font-size: 2rem;
+  rotate: calc(45deg);
 }
 
 .chatpage-input-bar button:hover {
-
   transform: translateY(-2px);
-
   transition: 0.3s;
 }
 
 /* ================= SIDEBAR BUTTON ================= */
 
 .chatpage-newchat-btn {
-
   background-color: #F09C27;
-
   border: none;
-
   outline: none;
-
   width: 100%;
-
   height: 60px;
-
   border-radius: 15px;
-
   font-size: 25px;
-
   font-weight: 400;
-
   cursor: pointer;
 }
 
 .chatpage-newchat-btn i {
-
   color: black;
-
   font-size: 1.5rem;
-
   margin-right: 8px;
 }
 
 .chatpage-newchat-btn:hover {
-
   transform: translateY(-2px);
-
   transition: 0.3s;
 }
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
-
   .chatpage-main-layout {
-
     flex-direction: column;
+    height: auto;
+    overflow: visible;
   }
 
   .chatpage-container {
-
     width: 100%;
-
+    height: 70vh;
     margin: 80px 0 0 0;
   }
 
   .chatpage-sidebar {
-
     width: 100%;
-
     max-width: 100%;
-
     height: auto;
-
     margin: 0;
   }
 
   .chatpage-message {
-
     max-width: 85%;
   }
-
 }
