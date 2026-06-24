@@ -12,7 +12,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         ?.replace("Bearer ", "")
         .trim();
 
-    if (!token) {
+    if (!token || token === "null" || token === "undefined") {
       throw new ApiError(401, "Unauthorized request");
     }
 

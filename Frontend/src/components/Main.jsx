@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../Styles/Main.css";
 
 import MainImage from "../assets/MainImage.png";
-
+                                 
 const Main = () => {
   const navigate = useNavigate();
   return (

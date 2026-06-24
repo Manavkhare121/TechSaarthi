@@ -1,14 +1,11 @@
+/* ================= NOTICE CONTAINER ================= */
+
 .notice-container {
     width: 90%;
-
     max-width: 1200px;
-
     min-height: 75vh;
-
     background-color: white;
-
     border-radius: 15px;
-
     margin: 80px auto;
     display: flex;
     gap: 20px;
@@ -20,9 +17,7 @@
 .notice-box {
     flex: 1;
     border-radius: 15px;
-
     display: flex;
-
     flex-direction: column;
 }
 
@@ -31,30 +26,20 @@
 
 .notice-header {
     width: 100%;
-
     background: #F09C27;
-
     font-weight: 600;
-
     font-size: 25px;
-
-    /* padding: 5px; */
-
     border-radius: 10px 10px 0 0;
-
     margin-bottom: 20px;
-
     display: flex;
-
     align-items: center;
-
     gap: 15px;
-
     color: black;
 }
 
-.notice-header i {
-    font-size: 2rem;
+.notice-header img {
+    height: 50px;
+    padding: 5px;
 }
 
 
@@ -62,12 +47,20 @@
 
 .alerts-list {
     flex: 1;
-
     display: flex;
     padding: 20px;
     flex-direction: column;
-
     gap: 20px;
+}
+
+
+/* ================= LOADING ================= */
+
+.notice-loading {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    padding: 30px 0;
 }
 
 
@@ -75,40 +68,34 @@
 
 .alert-item {
     background: #FBFADE;
-
     border: 1.5px solid black;
-
     border-radius: 12px;
-
     padding: 20px 25px;
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 20px;
-
     font-size: 20px;
-
     font-weight: 400;
-
     box-sizing: border-box;
 }
 
 
-/* ================= LINKS ================= */
+/* ================= VIEW BUTTON (inline link style) ================= */
 
-.alert-item a {
-    text-decoration: none;
-
-    color: black;
-
+.notice-view-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
     font-weight: 600;
+    color: black;
+    text-decoration: none;
+    padding: 0;
+    margin-left: 8px;
 }
 
-.alert-item a:hover {
+.notice-view-btn:hover {
     text-decoration: underline;
 }
 
@@ -117,20 +104,125 @@
 
 .alert-time {
     font-size: 18px;
-
     color: #333;
-
     white-space: nowrap;
+}
+
+
+/* ====================================================
+   MODAL
+   ==================================================== */
+
+.notice-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.notice-modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 75vw;
+    max-width: 900px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+}
+
+.notice-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.12);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: #222;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.notice-modal-close:hover {
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.notice-modal-header {
+    background: #F09C27;
+    padding: 14px 55px 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #412402;
+    border-radius: 16px 16px 0 0;
+    flex-shrink: 0;
+}
+
+.notice-modal-body {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.notice-iframe {
+    width: 100%;
+    flex: 1;
+    min-height: 60vh;
+    border: none;
+}
+
+.notice-modal-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 40px;
+    color: #555;
+    font-size: 16px;
+}
+
+.notice-download-btn {
+    background: #F09C27;
+    color: #412402;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notice-download-btn:hover {
+    background: #d4861f;
 }
 
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
-
     .notice-container {
         width: 95%;
-
         padding: 15px;
     }
 
@@ -140,13 +232,20 @@
 
     .alert-item {
         flex-direction: column;
-
         align-items: flex-start;
-
         font-size: 16px;
     }
 
     .alert-time {
         font-size: 15px;
+    }
+
+    .notice-modal {
+        width: 95vw;
+        max-height: 90vh;
+    }
+
+    .notice-iframe {
+        min-height: 50vh;
     }
 }

@@ -29,7 +29,7 @@ const Userlogin = ({ setRole }) => {
 
       console.log(response.data);
       const userRole = response.data.data.user.role;
-      localStorage.setItem("role", userRole);
+      localStorage.setItem("userRole", userRole);
       if (setRole) {
         setRole(userRole);
       }

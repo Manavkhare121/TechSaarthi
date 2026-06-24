@@ -12,6 +12,7 @@ import CollegeInfo from "./Pages/User/UserForm.jsx";
 import CollegeForm from "./Pages/College/CollegeForm.jsx";
 import Chatbot from "./Layout/Chatbot.jsx";
 import GovernmentForm from "./Pages/Government/GovernmentForm.jsx";
+import AdminNotice from "./Pages/Government/NoticeUpload.jsx";
 
 function App() {
   const [role, setRole] = useState(
@@ -42,12 +43,12 @@ function App() {
         <Route path="/About" element={<About />} />
         <Route path="/Notice" element={<Notice />} />
         <Route path="/chatbot" element={<Chatbot />} />
-        <Route path="/Helpline" element={<div>Helpline Page Placeholder</div>} />
+        <Route path="/Helpline" element={<AdminNotice/>} />
 
         {/* Role Specific Routes */}
-        {role === "user" && <Route path="/CollegeInfo" element={<CollegeInfo />} />}
-        {role === "college" && <Route path="/CollegeForm" element={<CollegeForm />} />}
-        {role === "government" && <Route path="/GovernmentForm" element={<GovernmentForm />} />}
+        {role === "user" && <Route path="/collegeinfo" element={<CollegeInfo />} />}
+        {role === "college" && <Route path="/collegeform" element={<CollegeForm />} />}
+        {role === "government" && <Route path="/governmentform" element={<GovernmentForm />} />}
       </Routes>
     </>
   );

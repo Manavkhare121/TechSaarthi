@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../Styles/GovernmentForm.css";
-
+                             
 const Verification = () => {
 const [colleges, setColleges] = useState([]);
 const [selectedCollegeId, setSelectedCollegeId] = useState("");

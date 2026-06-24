@@ -126,7 +126,6 @@
     transform: translateY(-2px);
 }
 
-/* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
     .collegeform-container {
@@ -171,7 +170,6 @@
     }
 }
 
-/* ================= COLLEGE CARD ================= */
 
 .collegeform-card {
     margin-top: 40px;

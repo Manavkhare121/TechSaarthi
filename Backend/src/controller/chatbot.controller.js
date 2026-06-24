@@ -41,7 +41,7 @@ const getChats = asyncHandler(async (req, res) => {
 
   const chats = await chatmodel.find({
     user: user._id,
-  });
+  }).sort({ updatedAt: -1 });
 
   return res.status(200).json(
     new ApiResponse(
@@ -73,29 +73,51 @@ const getMessages = asyncHandler(async (req, res) => {
   );
 });
 
-async function deleteChat(req, res) {
-    const chatId = req.params.id;
-    const userId = req.user._id;
+const deleteChat = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+  const userId = req.user._id;
 
-    try {
-        const chat = await chatmodel.findById(chatId);
-        if (!chat) return res.status(404).json({ message: "Chat not found" });
+  const chat = await chatmodel.findById(chatId);
+  if (!chat) {
+    throw new ApiError(404, "Chat not found");
+  }
 
-        // Broken chats (empty users) or owner can delete
-        const isOwner = chat.users.length === 0 || chat.users.includes(userId);
-        if (!isOwner) return res.status(403).json({ message: "Unauthorized" });
+  if (chat.user.toString() !== userId.toString()) {
+    throw new ApiError(403, "Unauthorized");
+  }
 
-        await messageModel.deleteMany({ chat: chatId });
-        await chatmodel.findByIdAndDelete(chatId);
+  await messageModel.deleteMany({ chat: chatId });
+  await chatmodel.findByIdAndDelete(chatId);
 
-        res.status(200).json({ message: "Deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
-    }
-}
+  return res.status(200).json(
+    new ApiResponse(200, {}, "Deleted successfully")
+  );
+});
+
+const updateChatTitle = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+  const { title } = req.body;
+  const userId = req.user._id;
+
+  const chat = await chatmodel.findOneAndUpdate(
+    { _id: chatId, user: userId },
+    { title: title },
+    { new: true }
+  );
+
+  if (!chat) {
+    throw new ApiError(404, "Chat not found or unauthorized");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, chat, "Chat title updated successfully")
+  );
+});
 
 export {
   createchat,
   getChats,
   getMessages,
+  deleteChat,
+  updateChatTitle
 };

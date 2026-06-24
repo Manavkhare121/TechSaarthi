@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../Layout/Navbar.jsx";
 import "../../Styles/UserForm.css";
 import axios from "axios";
-
+                                //USERFORM CODE//
 const CollegeInfo = () => {
   const [formData, setFormData] = useState({
     jeePercentile: "",
