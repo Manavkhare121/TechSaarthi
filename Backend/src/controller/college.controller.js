@@ -6,25 +6,29 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const createCollege = asyncHandler(async (req, res) => {
   const {
     collegeName,
-    state,
-    location,
-    collegeType,
+  state,
+  location,
+  collegeType,
+  departmentName,
 
-    departmentName,
+  jeeCutoff,
+  cuetCutoff,
+  class12Cutoff,
 
-    jeeCutoff,
-    cuetCutoff,
-    class12Cutoff,
+  fees,
 
-    fees,
+  collegePhone,
 
-    hostelAvailable,
-    hostelFees,
+  scholarshipAvailable,
+  scholarshipDetails,
 
-    boysHostel,
-    girlsHostel,
+  hostelAvailable,
+  hostelFees,
 
-    messAvailable,
+  boysHostel,
+  girlsHostel,
+
+  messAvailable,
   } = req.body;
 
   if (!collegeName || !state || !location || !collegeType) {
@@ -33,25 +37,29 @@ const createCollege = asyncHandler(async (req, res) => {
 
   const college = await College.create({
     collegeName,
-    state,
-    location,
-    collegeType,
+  state,
+  location,
+  collegeType,
+  departmentName,
 
-    departmentName,
+  jeeCutoff,
+  cuetCutoff,
+  class12Cutoff,
 
-    jeeCutoff,
-    cuetCutoff,
-    class12Cutoff,
+  fees,
 
-    fees,
+  collegePhone,
 
-    hostelAvailable,
-    hostelFees,
+  scholarshipAvailable,
+  scholarshipDetails,
 
-    boysHostel,
-    girlsHostel,
+  hostelAvailable,
+  hostelFees,
 
-    messAvailable,
+  boysHostel,
+  girlsHostel,
+
+  messAvailable,
 
     createdBy: req.user._id,
   });
@@ -87,7 +95,17 @@ const getMyCollegeDetails = asyncHandler(async (req, res) => {
   );
 });
 
+const searchColleges = asyncHandler(async (req, res) => {
+  const { name } = req.query;
+  const colleges = await College.find({
+    collegeName: { $regex: name, $options: "i" }
+  }).select("collegeName state location collegePhone");
+
+  return res.status(200).json(new ApiResponse(200, colleges, "Search results"));
+});
+
 export {
   createCollege,
   getMyCollegeDetails,
+  searchColleges
 };

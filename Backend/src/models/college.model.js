@@ -19,7 +19,7 @@ const collegeSchema = new Schema(
     collegeType: {
       type: String,
       required: true,
-      
+
       enum: ["Government", "Private", "Deemed"],
     },
     departmentName: {
@@ -55,6 +55,20 @@ const collegeSchema = new Schema(
     messAvailable: {
       type: Boolean,
       default: false,
+    },
+    collegePhone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    scholarshipAvailable: {
+      type: Boolean,
+      default: false,
+    },
+
+    scholarshipDetails: {
+      type: String,
     },
     verified: {
       type: Boolean,
@@ -120,33 +134,30 @@ collegeSchema.statics.findMatchingColleges = async function (criteria) {
     query.$and = andConditions;
   }
 
-  
   if (criteria.state) {
-    
     const stateMap = {
-      "up": ["UP", "Uttar Pradesh", "uttar pradesh"],
+      up: ["UP", "Uttar Pradesh", "uttar pradesh"],
       "uttar pradesh": ["UP", "Uttar Pradesh", "uttar pradesh"],
-      "mp": ["MP", "Madhya Pradesh", "madhya pradesh"],
+      mp: ["MP", "Madhya Pradesh", "madhya pradesh"],
       "madhya pradesh": ["MP", "Madhya Pradesh", "madhya pradesh"],
-      "delhi": ["Delhi", "DL", "New Delhi"],
-      "dl": ["Delhi", "DL", "New Delhi"],
-      "rajasthan": ["Rajasthan", "RJ"],
-      "rj": ["Rajasthan", "RJ"],
-      "bihar": ["Bihar", "BR"],
-      "maharashtra": ["Maharashtra", "MH"],
-      "mh": ["Maharashtra", "MH"],
-      "gujarat": ["Gujarat", "GJ"],
-      "karnataka": ["Karnataka", "KA"],
+      delhi: ["Delhi", "DL", "New Delhi"],
+      dl: ["Delhi", "DL", "New Delhi"],
+      rajasthan: ["Rajasthan", "RJ"],
+      rj: ["Rajasthan", "RJ"],
+      bihar: ["Bihar", "BR"],
+      maharashtra: ["Maharashtra", "MH"],
+      mh: ["Maharashtra", "MH"],
+      gujarat: ["Gujarat", "GJ"],
+      karnataka: ["Karnataka", "KA"],
       "tamil nadu": ["Tamil Nadu", "TN"],
-      "tn": ["Tamil Nadu", "TN"],
+      tn: ["Tamil Nadu", "TN"],
       "west bengal": ["West Bengal", "WB"],
-      "wb": ["West Bengal", "WB"],
+      wb: ["West Bengal", "WB"],
     };
 
     const userState = criteria.state.toLowerCase();
     const possibleValues = stateMap[userState] || [criteria.state];
 
-  
     const stateRegex = possibleValues
       .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
       .join("|");
@@ -172,7 +183,11 @@ collegeSchema.statics.findMatchingColleges = async function (criteria) {
     .sort({ rank: 1, performanceScore: -1 })
     .limit(5);
 
-  console.log("[TechSaarthi] Colleges found:", colleges.length, colleges.map((c) => c.collegeName));
+  console.log(
+    "[TechSaarthi] Colleges found:",
+    colleges.length,
+    colleges.map((c) => c.collegeName)
+  );
 
   return colleges;
 };

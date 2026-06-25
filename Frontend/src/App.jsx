@@ -13,7 +13,7 @@ import CollegeForm from "./Pages/College/CollegeForm.jsx";
 import Chatbot from "./Layout/Chatbot.jsx";
 import GovernmentForm from "./Pages/Government/GovernmentForm.jsx";
 import AdminNotice from "./Pages/Government/NoticeUpload.jsx";
-
+import Helpline from "./Pages/User/Helpline.jsx";
 function App() {
   const [role, setRole] = useState(
     localStorage.getItem("userRole") || null
@@ -43,8 +43,8 @@ function App() {
         <Route path="/About" element={<About />} />
         <Route path="/Notice" element={<Notice />} />
         <Route path="/chatbot" element={<Chatbot />} />
-        <Route path="/Helpline" element={<AdminNotice/>} />
-
+        <Route path="/adminnotice" element={<AdminNotice/>} />
+        <Route path="/Helpline" element={<Helpline/>}/>
         {/* Role Specific Routes */}
         {role === "user" && <Route path="/collegeinfo" element={<CollegeInfo />} />}
         {role === "college" && <Route path="/collegeform" element={<CollegeForm />} />}

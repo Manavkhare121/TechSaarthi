@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../Layout/Navbar.jsx";
 import "../../Styles/UserForm.css";
 import axios from "axios";
-                                //USERFORM CODE//
+//USERFORM CODE//
 const CollegeInfo = () => {
   const [formData, setFormData] = useState({
     jeePercentile: "",
@@ -12,7 +12,7 @@ const CollegeInfo = () => {
   });
   const [colleges, setColleges] = useState([]);
   const [error, setError] = useState("");
-  
+
   const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
 
   const handleChange = (e) => {
@@ -25,22 +25,22 @@ const CollegeInfo = () => {
   const handleSearch = async () => {
     try {
       setError("");
-     const response = await axios.post(
-  `${BACKEND_URL}/api/v1/user/eligible-colleges`,
-  {
-    jeePercentile: Number(formData.jeePercentile),
-    cuetPercentile: Number(formData.cuetPercentile),
-    class12Marks: Number(formData.class12Marks),
-    preferredDepartment: formData.preferredDepartment,
-  },
-  {
-    withCredentials: true,
-  }
-);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/user/eligible-colleges`,
+        {
+          jeePercentile: Number(formData.jeePercentile),
+          cuetPercentile: Number(formData.cuetPercentile),
+          class12Marks: Number(formData.class12Marks),
+          preferredDepartment: formData.preferredDepartment,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
-console.log("Response:", response.data);
+      console.log("Response:", response.data);
 
-setColleges(response.data.data);
+      setColleges(response.data.data);
       setColleges(response.data.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch colleges");
@@ -65,7 +65,6 @@ setColleges(response.data.data);
             />
           </div>
 
-          
           <div className="college-field">
             <h4>CUET Percentile</h4>
             <input
@@ -77,7 +76,6 @@ setColleges(response.data.data);
             />
           </div>
 
-          
           <div className="college-field">
             <h4>12th Marks</h4>
             <input
@@ -102,7 +100,6 @@ setColleges(response.data.data);
             </select>
           </div>
 
-          
           <button className="college-btn" onClick={handleSearch}>
             Search
           </button>
@@ -111,102 +108,104 @@ setColleges(response.data.data);
         {error && <p style={{ color: "red", marginTop: "15px" }}>{error}</p>}
 
         {colleges.length > 0 && (
-  <div className="college-results">
-    <h4 className="result-title">Matching Colleges</h4>
+          <div className="college-results">
+            <h4 className="result-title">Matching Colleges</h4>
 
-    <div className="college-card-container">
-      {colleges.map((college) => (
-        <div key={college._id} className="college-card">
-          <div className="college-card-header">
-            <h3>{college.collegeName}</h3>
-            <span className="college-rank">
-              Rank #{college.rank}
-            </span>
+            <div className="college-card-container">
+              {colleges.map((college) => (
+                <div key={college._id} className="college-card">
+                  <div className="college-card-header">
+                    <h3>{college.collegeName}</h3>
+                    <span className="college-rank">Rank #{college.rank}</span>
+                  </div>
+
+                  <div className="college-details">
+                    <p>
+                      <strong>Location:</strong> {college.location},{" "}
+                      {college.state}
+                    </p>
+
+                    <p>
+                      <strong>College Type:</strong> {college.collegeType}
+                    </p>
+
+                    <p>
+                      <strong>Department:</strong> {college.departmentName}
+                    </p>
+
+                    <p>
+                      <strong>JEE Cutoff:</strong> {college.jeeCutoff}
+                    </p>
+
+                    <p>
+                      <strong>CUET Cutoff:</strong> {college.cuetCutoff}
+                    </p>
+
+                    <p>
+                      <strong>12th Cutoff:</strong> {college.class12Cutoff}%
+                    </p>
+
+                    <p>
+                      <strong>Fees:</strong> ₹{college.fees?.toLocaleString()}
+                    </p>
+                    <p>
+                      <strong>Hostel Available:</strong>{" "}
+                      {college.hostelAvailable ? "Yes" : "No"}
+                    </p>
+
+                    <p>
+                      <strong>Hostel Fees:</strong> ₹
+                      {college.hostelFees?.toLocaleString()}
+                    </p>
+
+                    <p>
+                      <strong>Boys Hostel:</strong>{" "}
+                      {college.boysHostel ? "Yes" : "No"}
+                    </p>
+
+                    <p>
+                      <strong>Girls Hostel:</strong>{" "}
+                      {college.girlsHostel ? "Yes" : "No"}
+                    </p>
+
+                    <p>
+                      <strong>Mess Available:</strong>{" "}
+                      {college.messAvailable ? "Yes" : "No"}
+                    </p>
+                    <p>
+                      <strong>College Phone:</strong>
+
+                      {college.collegePhone}
+                    </p>
+
+                    <p>
+                      <strong>Scholarship:</strong>
+
+                      {college.scholarshipAvailable
+                        ? "Available ✅"
+                        : "Not Available ❌"}
+                    </p>
+
+                    <p>
+                      <strong>Verified:</strong>{" "}
+                      {college.verified ? "Yes ✅" : "No ❌"}
+                    </p>
+
+                    <p>
+                      <strong>Performance Score:</strong>{" "}
+                      {college.performanceScore}
+                    </p>
+
+                    <p>
+                      <strong>Verification Date:</strong>{" "}
+                      {new Date(college.verificationDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
-          <div className="college-details">
-            <p>
-              <strong>Location:</strong> {college.location},{" "}
-              {college.state}
-            </p>
-
-            <p>
-              <strong>College Type:</strong>{" "}
-              {college.collegeType}
-            </p>
-
-            <p>
-              <strong>Department:</strong>{" "}
-              {college.departmentName}
-            </p>
-
-            <p>
-              <strong>JEE Cutoff:</strong>{" "}
-              {college.jeeCutoff}
-            </p>
-
-            <p>
-              <strong>CUET Cutoff:</strong>{" "}
-              {college.cuetCutoff}
-            </p>
-
-            <p>
-              <strong>12th Cutoff:</strong>{" "}
-              {college.class12Cutoff}%
-            </p>
-
-            <p>
-              <strong>Fees:</strong> ₹
-              {college.fees?.toLocaleString()}
-            </p>
-
-            <p>
-              <strong>Hostel Available:</strong>{" "}
-              {college.hostelAvailable ? "Yes" : "No"}
-            </p>
-
-            <p>
-              <strong>Hostel Fees:</strong> ₹
-              {college.hostelFees?.toLocaleString()}
-            </p>
-
-            <p>
-              <strong>Boys Hostel:</strong>{" "}
-              {college.boysHostel ? "Yes" : "No"}
-            </p>
-
-            <p>
-              <strong>Girls Hostel:</strong>{" "}
-              {college.girlsHostel ? "Yes" : "No"}
-            </p>
-
-            <p>
-              <strong>Mess Available:</strong>{" "}
-              {college.messAvailable ? "Yes" : "No"}
-            </p>
-
-            <p>
-              <strong>Verified:</strong>{" "}
-              {college.verified ? "Yes ✅" : "No ❌"}
-            </p>
-
-            <p>
-              <strong>Performance Score:</strong>{" "}
-              {college.performanceScore}
-            </p>
-
-            <p>
-              <strong>Verification Date:</strong>{" "}
-              {new Date(
-                college.verificationDate
-              ).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+        )}
       </div>
     </>
   );

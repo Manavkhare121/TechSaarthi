@@ -15,14 +15,16 @@ const CollegeForm = () => {
     fees: "",
     hostelAvailable: "false",
     hostelFees: "",
+    collegePhone: "",
+    scholarshipAvailable: "false",
+    scholarshipDetails: "",
   });
 
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [college, setCollege] = useState(null);
 
-  const BACKEND_URL =
-    import.meta.env.VITE_API_BASE || "http://localhost:3000";
+  const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
 
   useEffect(() => {
     fetchCollege();
@@ -34,7 +36,7 @@ const CollegeForm = () => {
         `${BACKEND_URL}/api/v1/college/my-college`,
         {
           withCredentials: true,
-        }
+        },
       );
 
       setCollege(response.data.data);
@@ -66,6 +68,9 @@ const CollegeForm = () => {
       fees: Number(formData.fees),
       hostelFees: Number(formData.hostelFees),
       hostelAvailable: formData.hostelAvailable === "true",
+      collegePhone: formData.collegePhone,
+      scholarshipAvailable: formData.scholarshipAvailable === "true",
+      scholarshipDetails: formData.scholarshipDetails,
     };
 
     try {
@@ -78,15 +83,13 @@ const CollegeForm = () => {
           },
           credentials: "include",
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Something went wrong"
-        );
+        throw new Error(data.message || "Something went wrong");
       }
 
       setMessage(data.message);
@@ -100,26 +103,13 @@ const CollegeForm = () => {
   return (
     <>
       <div className="collegeform-container">
-        <h3 className="collegeform-title">
-          College Information
-        </h3>
+        <h3 className="collegeform-title">College Information</h3>
 
-        {message && (
-          <p className="collegeform-success-msg">
-            {message}
-          </p>
-        )}
+        {message && <p className="collegeform-success-msg">{message}</p>}
 
-        {error && (
-          <p className="collegeform-error-msg">
-            {error}
-          </p>
-        )}
+        {error && <p className="collegeform-error-msg">{error}</p>}
 
-        <form
-          className="collegeform-form-wrapper"
-          onSubmit={handleSubmit}
-        >
+        <form className="collegeform-form-wrapper" onSubmit={handleSubmit}>
           <div className="collegeform-row">
             <div className="collegeform-field collegeform-big">
               <h4>College Name</h4>
@@ -229,9 +219,44 @@ const CollegeForm = () => {
             </div>
           </div>
 
-          <h3 className="collegeform-hostel-info">
-            Hostel Information
-          </h3>
+          <div className="collegeform-row">
+            <div className="collegeform-field collegeform-big">
+              <h4>Scholarship Details</h4>
+
+              <input
+                type="text"
+                name="scholarshipDetails"
+                value={formData.scholarshipDetails}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="collegeform-field collegeform-small">
+              <h4>Scholarship Available</h4>
+
+              <select
+                name="scholarshipAvailable"
+                value={formData.scholarshipAvailable}
+                onChange={handleChange}
+                className="collegeform-select"
+              >
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div className="collegeform-field collegeform-small">
+              <h4>College Phone</h4>
+
+              <input
+                type="text"
+                name="collegePhone"
+                value={formData.collegePhone}
+                onChange={handleChange}
+              />
+            </div>
+            
+          </div>
+
+          <h3 className="collegeform-hostel-info">Hostel Information</h3>
 
           <div className="collegeform-row collegeform-hostel-section">
             <div className="collegeform-field collegeform-big">
@@ -259,10 +284,7 @@ const CollegeForm = () => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="collegeform-btn"
-            >
+            <button type="submit" className="collegeform-btn">
               Submit
             </button>
           </div>
@@ -276,58 +298,46 @@ const CollegeForm = () => {
               <h3>{college.collegeName}</h3>
 
               <span className="collegeform-badge">
-                {college.verified
-                  ? "Verified ✅"
-                  : "Pending ⏳"}
+                {college.verified ? "Verified ✅" : "Pending ⏳"}
               </span>
             </div>
 
             <div className="collegeform-card-details">
               <p>
-                <strong>State:</strong>{" "}
-                {college.state}
+                <strong>State:</strong> {college.state}
               </p>
 
               <p>
-                <strong>Location:</strong>{" "}
-                {college.location}
+                <strong>Location:</strong> {college.location}
               </p>
 
               <p>
-                <strong>Type:</strong>{" "}
-                {college.collegeType}
+                <strong>Type:</strong> {college.collegeType}
               </p>
 
               <p>
-                <strong>Department:</strong>{" "}
-                {college.departmentName}
+                <strong>Department:</strong> {college.departmentName}
               </p>
 
               <p>
-                <strong>JEE Cutoff:</strong>{" "}
-                {college.jeeCutoff}
+                <strong>JEE Cutoff:</strong> {college.jeeCutoff}
               </p>
 
               <p>
-                <strong>CUET Cutoff:</strong>{" "}
-                {college.cuetCutoff}
+                <strong>CUET Cutoff:</strong> {college.cuetCutoff}
               </p>
 
               <p>
-                <strong>12th Cutoff:</strong>{" "}
-                {college.class12Cutoff}
+                <strong>12th Cutoff:</strong> {college.class12Cutoff}
               </p>
 
               <p>
-                <strong>Fees:</strong> ₹
-                {college.fees?.toLocaleString()}
+                <strong>Fees:</strong> ₹{college.fees?.toLocaleString()}
               </p>
 
               <p>
                 <strong>Hostel:</strong>{" "}
-                {college.hostelAvailable
-                  ? "Yes"
-                  : "No"}
+                {college.hostelAvailable ? "Yes" : "No"}
               </p>
 
               <p>
@@ -337,34 +347,37 @@ const CollegeForm = () => {
 
               <p>
                 <strong>Boys Hostel:</strong>{" "}
-                {college.boysHostel
-                  ? "Yes"
-                  : "No"}
+                {college.boysHostel ? "Yes" : "No"}
               </p>
 
               <p>
                 <strong>Girls Hostel:</strong>{" "}
-                {college.girlsHostel
-                  ? "Yes"
-                  : "No"}
+                {college.girlsHostel ? "Yes" : "No"}
               </p>
 
               <p>
                 <strong>Mess Available:</strong>{" "}
-                {college.messAvailable
-                  ? "Yes"
-                  : "No"}
+                {college.messAvailable ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Phone:</strong>
+
+                {college.collegePhone}
               </p>
 
               <p>
-                <strong>Rank:</strong>{" "}
-                {college.rank || "N/A"}
+                <strong>Scholarship:</strong>
+
+                {college.scholarshipAvailable ? "Yes" : "No"}
+              </p>
+
+              <p>
+                <strong>Rank:</strong> {college.rank || "N/A"}
               </p>
 
               <p>
                 <strong>Performance:</strong>{" "}
-                {college.performanceScore ||
-                  "N/A"}
+                {college.performanceScore || "N/A"}
               </p>
             </div>
           </div>

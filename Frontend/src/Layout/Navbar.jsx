@@ -10,11 +10,30 @@ const Navbar = ({ role, setRole }) => {
   const BACKEND_URL =
     import.meta.env.VITE_API_BASE || "http://localhost:3000";
 
-  console.log("Navbar Role:", role);
+  // ✨ Role ke hisaab se left menu links
+  const getLeftMenuLinks = () => {
+    if (role === "government") {
+      return [
+        { label: "Notice Upload", path: "/adminnotice" },
+        { label: "Chatbot", path: "/chatbot" },
+      ];
+    } else if (role === "college") {
+      return [
+        { label: "Helpline", path: "/Helpline" },
+        { label: "Chatbot", path: "/chatbot" },
+      ];
+    } else {
+      // Default: user ya koi role nahi
+      return [
+        { label: "Helpline", path: "/Helpline" },
+        { label: "Chatbot", path: "/chatbot" },
+      ];
+    }
+  };
+
+  const leftLinks = getLeftMenuLinks();
 
   const handleDetailsClick = () => {
-    console.log("Details Click Role:", role);
-
     if (role === "user") {
       navigate("/CollegeInfo");
     } else if (role === "college") {
@@ -31,27 +50,14 @@ const Navbar = ({ role, setRole }) => {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/auth/logout`,
         {},
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
-
-      console.log(
-        "Backend Response:",
-        response.data.message
-      );
+      console.log("Backend Response:", response.data.message);
     } catch (error) {
-      console.error(
-        "Logout Error:",
-        error.response?.data || error.message
-      );
+      console.error("Logout Error:", error.response?.data || error.message);
     } finally {
       localStorage.removeItem("userRole");
-
-      if (setRole) {
-        setRole(null);
-      }
-
+      if (setRole) setRole(null);
       navigate("/");
     }
   };
@@ -59,17 +65,17 @@ const Navbar = ({ role, setRole }) => {
   return (
     <nav className="navbar">
       <ul className="menu left">
-        <li onClick={() => navigate("/About")}>
-          About Us
-        </li>
+        <li onClick={() => navigate("/About")}>About Us</li>
+        {/* ✨ Dynamic left links based on role */}
 
-        <li onClick={() => navigate("/Helpline")}>
-          Helpline
-        </li>
+        {leftLinks.map((link, index) => (
+          <li key={index} onClick={() => navigate(link.path)}>
+            {link.label}
+          </li>
+        ))}
 
-        <li onClick={() => navigate("/chatbot")}>
-          Chatbot
-        </li>
+        {/* About Us hamesha rahega */}
+        
       </ul>
 
       <div className="box1">
@@ -81,17 +87,9 @@ const Navbar = ({ role, setRole }) => {
       </div>
 
       <ul className="menu right">
-        <li onClick={() => navigate("/Notice")}>
-          Notice
-        </li>
-
-        <li onClick={handleDetailsClick}>
-          Details
-        </li>
-
-        <li onClick={handleLogout}>
-          Logout
-        </li>
+        <li onClick={() => navigate("/Notice")}>Notice</li>
+        <li onClick={handleDetailsClick}>Details</li>
+        <li onClick={handleLogout}>Logout</li>
       </ul>
     </nav>
   );
