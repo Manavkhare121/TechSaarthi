@@ -42,7 +42,6 @@ const getEligibleColleges = asyncHandler(async (req, res) => {
     actualDepartment,
   });
 
-  // Find eligible colleges
   const colleges = await College.find({
     verified: true,
     departmentName: actualDepartment,

@@ -31,7 +31,7 @@ const createCollege = asyncHandler(async (req, res) => {
   messAvailable,
   } = req.body;
 
-  if (!collegeName || !state || !location || !collegeType) {
+  if (!collegeName || !state || !location || !collegeType || !collegePhone) {
     throw new ApiError(400, "Required college fields are missing");
   }
 

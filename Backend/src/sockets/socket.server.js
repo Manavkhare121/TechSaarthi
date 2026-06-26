@@ -5,13 +5,13 @@ import {
   generateResponse,
   generateVectors,
   extractCollegeCriteria,
-  detectLanguage,         // ← new import
+  detectLanguage,
 } from "../services/ai.service.js";
 import { messageModel } from "../models/message.model.js";
 import { createMemory, queryMemory } from "../services/vector.service.js";
 import { Auth } from "../models/auth.model.js";
 import { College } from "../models/college.model.js";
-import { chatmodel } from "../models/chat.model.js";   // ← new import
+import { chatmodel } from "../models/chat.model.js";   
 
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {

@@ -14,8 +14,8 @@ const Navbar = ({ role, setRole }) => {
   const getLeftMenuLinks = () => {
     if (role === "government") {
       return [
+        { label: "Helpline", path: "/Helpline" },
         { label: "Notice Upload", path: "/adminnotice" },
-        { label: "Chatbot", path: "/chatbot" },
       ];
     } else if (role === "college") {
       return [

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import "../../Styles/Helpline.css"
+import "../Styles/Helpline.css"
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
 
