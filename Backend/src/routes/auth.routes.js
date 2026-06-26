@@ -4,21 +4,38 @@ import {
   registerUser,
   loginUser,
   logoutuser,
+  googleLogin
+
 } from "../controller/auth.controller.js";
 
 import {
   verifyJWT,
 } from "../middleware/auth.middleware.js";
 
+import {
+  validateRegister,
+  validateLogin,
+} from "../middleware/validator.middlware.js";
+
 const router = Router();
 
-router.route("/register").post(registerUser);
+router.post(
+  "/register",
+  validateRegister,
+  registerUser
+);
 
-router.route("/login").post(loginUser);
+router.post(
+  "/login",
+  validateLogin,
+  loginUser
+);
 
-router.route("/logout").post(
+router.post(
+  "/logout",
   verifyJWT,
   logoutuser
 );
 
+router.post("/google", googleLogin);
 export default router;

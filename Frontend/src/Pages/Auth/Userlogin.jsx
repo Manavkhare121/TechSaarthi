@@ -4,6 +4,7 @@ import LoginCartoon from "../../assets/LoginCartoon.png";
 import GoogleLogo from "../../assets/GoogleLogo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Userlogin = ({ setRole }) => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Userlogin = ({ setRole }) => {
         },
         {
           withCredentials: true,
-        }
+        },
       );
 
       console.log(response.data);
@@ -35,7 +36,6 @@ const Userlogin = ({ setRole }) => {
       }
 
       navigate("/About");
-
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
     }
@@ -60,12 +60,7 @@ const Userlogin = ({ setRole }) => {
 
           <form onSubmit={handleLogin}>
             <div className="userlogin-input-box">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-              />
+              <input type="email" name="email" placeholder="Email" required />
             </div>
 
             <div className="userlogin-input-box">
@@ -98,9 +93,7 @@ const Userlogin = ({ setRole }) => {
               <div className="userlogin-sign-up">
                 <p>
                   Don't have an account?
-                  <span onClick={() => navigate("/UserSignup")}>
-                    {" "}Sign Up
-                  </span>
+                  <span onClick={() => navigate("/UserSignup")}> Sign Up</span>
                 </p>
               </div>
 
@@ -111,13 +104,40 @@ const Userlogin = ({ setRole }) => {
               </div>
 
               <div className="userlogin-google-btn">
-                <button type="button" className="userlogin-btn2">
-                  <img
-                    src={GoogleLogo}
-                    alt="Google Logo"
-                    className="userlogin-img4"
-                  />
-                </button>
+                <GoogleLogin
+                  onSuccess={async (credentialResponse) => {
+                    try {
+                      const response = await axios.post(
+                        `${BACKEND_URL}/api/v1/auth/google`,
+
+                        {
+                          credential: credentialResponse.credential,
+                        },
+
+                        {
+                          withCredentials: true,
+                        },
+                      );
+
+                      console.log(response.data);
+
+                      const userRole = response.data.data.user.role;
+
+                      localStorage.setItem("userRole", userRole);
+
+                      if (setRole) {
+                        setRole(userRole);
+                      }
+
+                      navigate("/About");
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                  onError={() => {
+                    console.log("Google Login Failed");
+                  }}
+                />
               </div>
             </div>
           </form>

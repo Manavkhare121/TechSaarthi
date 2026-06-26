@@ -4,7 +4,7 @@ import SignupCartoon from "../../assets/SignupCartoon.png";
 import GoogleLogo from "../../assets/GoogleLogo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { GoogleLogin } from "@react-oauth/google";
 const Usersignup = () => {
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
@@ -30,7 +30,7 @@ const Usersignup = () => {
         },
         {
           withCredentials: true,
-        }
+        },
       );
 
       console.log(response.data);
@@ -62,11 +62,21 @@ const Usersignup = () => {
           <form onSubmit={handleSubmit}>
             <div className="usersignup-name-row">
               <div className="usersignup-fullname">
-                <input type="text" name="firstName" placeholder="First Name" required />
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  required
+                />
               </div>
 
               <div className="usersignup-lastname">
-                <input type="text" name="lastName" placeholder="Last Name" required />
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  required
+                />
               </div>
             </div>
 
@@ -75,9 +85,14 @@ const Usersignup = () => {
             </div>
 
             <div className="usersignup-input-box">
-              <input type="password" name="password" placeholder="Password" required />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+              />
             </div>
-            
+
             <div className="usersignup-input-box">
               <select name="role">
                 <option value="user">User</option>
@@ -88,11 +103,14 @@ const Usersignup = () => {
 
             <div className="usersignup-option">
               <label className="usersignup-remember">
-                <input type="checkbox" required />I agree to the Terms and Privacy Policies
+                <input type="checkbox" required />I agree to the Terms and
+                Privacy Policies
               </label>
             </div>
 
-            <button type="submit" className="usersignup-btn">Create Account</button>
+            <button type="submit" className="usersignup-btn">
+              Create Account
+            </button>
           </form>
 
           <div className="usersignup-sign-up">
@@ -108,13 +126,34 @@ const Usersignup = () => {
             </p>
           </div>
 
-          <button className="usersignup-btn2">
-            <img
-              src={GoogleLogo}
-              alt="Google Logo"
-              className="usersignup-img4"
+          <div className="usersignup-btn2">
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                try {
+                  const response = await axios.post(
+                    `${BACKEND_URL}/api/v1/auth/google`,
+
+                    {
+                      credential: credentialResponse.credential,
+                    },
+
+                    {
+                      withCredentials: true,
+                    },
+                  );
+
+                  console.log(response.data);
+
+                  navigate("/About");
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+              onError={() => {
+                console.log("Google Signup Failed");
+              }}
             />
-          </button>
+          </div>
         </div>
       </div>
     </div>

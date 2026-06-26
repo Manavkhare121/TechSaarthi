@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Auth } from "../models/auth.model.js";
 import jwt from "jsonwebtoken"
 import redisClient from "../services/redis.service.js";
+import { OAuth2Client } from "google-auth-library";
 const generateAccessandRefreshToken = async (userId) => {
 
   try {
@@ -32,13 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const { username, email, password, role } = req.body;
 
-  if (
-    [username, email, password, role].some(
-      (field) => field?.trim() === ""
-    )
-  ) {
-    throw new ApiError(400, "All fields are required");
-  }
+  
 
   const existedUser = await Auth.findOne({
     $or: [{ username }, { email }],
@@ -77,14 +72,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const { email, username, password } = req.body;
 
-  if (!username && !email) {
-    throw new ApiError(400, "Username or email is required");
-  }
-
-  if (!password) {
-    throw new ApiError(400, "Password is required");
-  }
-
+ 
   const user = await Auth.findOne({
     $or: [{ username }, { email }],
   });
@@ -128,6 +116,77 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const googleLogin = asyncHandler(async (req, res) => {
+  const { credential } = req.body;
+
+  if (!credential) {
+    throw new ApiError(400, "Google credential is required");
+  }
+
+  // Verify Google Token
+  const ticket = await client.verifyIdToken({
+    idToken: credential,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+
+  if (!payload) {
+    throw new ApiError(401, "Invalid Google token");
+  }
+
+  const {
+    email,
+    name,
+    picture,
+    sub,
+  } = payload;
+
+  // Check if user already exists
+  let user = await Auth.findOne({ email });
+
+  if (!user) {
+    user = await Auth.create({
+      username: name.replace(/\s+/g, "").toLowerCase(),
+      email,
+      password: "",
+      role: "user",
+      googleId: sub,
+      avatar: picture,
+      provider: "google",
+    });
+  }
+
+  // Generate Tokens
+  const { accessToken, refreshToken } =
+    await generateAccessandRefreshToken(user._id);
+
+  const loggedInUser = await Auth.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggedInUser,
+          accessToken,
+          refreshToken,
+        },
+        "Google Login Successful"
+      )
+    );
+});
 const logoutuser = asyncHandler(async (req, res) => {
   const accessToken =
     req.cookies?.accessToken ||
@@ -184,9 +243,14 @@ const logoutuser = asyncHandler(async (req, res) => {
       )
     );
 });
+
+
+
+
 export {
   generateAccessandRefreshToken,
   registerUser,
   loginUser,
   logoutuser,
+  googleLogin
 };

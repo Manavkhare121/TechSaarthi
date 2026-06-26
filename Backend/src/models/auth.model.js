@@ -23,9 +23,22 @@ const authSchema = new Schema(
 
     password: {
       type: String,
-      required: [true, "Password is required"],
+      // required: [true, "Password is required"],
+      required: false,
     },
-
+    googleId: {
+      type: String,
+      default: null,
+    },
+    avatar: {
+      type: String,
+      default: "",
+    },
+    provider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
+    },
     role: {
       type: String,
       enum: ["user", "college", "government"],
@@ -43,22 +56,16 @@ const authSchema = new Schema(
 );
 
 authSchema.pre("save", async function (next) {
-
   if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
-  
-
 });
 
 authSchema.methods.isPasswordCorrect = async function (password) {
-
   return await bcrypt.compare(password, this.password);
-
 };
 
 authSchema.methods.generateAccessToken = function () {
-
   return jwt.sign(
     {
       _id: this._id,
@@ -76,7 +83,6 @@ authSchema.methods.generateAccessToken = function () {
 };
 
 authSchema.methods.generateRefreshToken = function () {
-
   return jwt.sign(
     {
       _id: this._id,
