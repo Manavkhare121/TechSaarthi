@@ -104,8 +104,60 @@ const searchColleges = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, colleges, "Search results"));
 });
 
+const updateCollege = asyncHandler(async (req, res) => {
+  const college = await College.findOne({
+    createdBy: req.user._id,
+  });
+
+  if (!college) {
+    throw new ApiError(404, "College not found");
+  }
+
+  const updatedCollege = await College.findOneAndUpdate(
+    { createdBy: req.user._id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      updatedCollege,
+      "College updated successfully"
+    )
+  );
+});
+
+const deleteCollege = asyncHandler(async (req, res) => {
+
+  const college = await College.findOne({
+    createdBy: req.user._id,
+  });
+
+  if (!college) {
+    throw new ApiError(404, "College not found");
+  }
+
+  await College.findOneAndDelete({
+    createdBy: req.user._id,
+  });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {},
+      "College deleted successfully"
+    )
+  );
+});
+
 export {
   createCollege,
   getMyCollegeDetails,
-  searchColleges
+  searchColleges,
+  updateCollege,
+  deleteCollege,
 };

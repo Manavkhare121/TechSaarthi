@@ -210,7 +210,7 @@
     );
     color: white;
     padding: 6px 14px;
-    border-radius: 50px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 700;
 }
@@ -232,6 +232,37 @@
     color: #990B0B;
 }
 
+.collegeform-delete-btn {
+    background-color: #cc0000;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.collegeform-delete-btn:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+}
+
+.collegeform-edit-btn {
+    background-color: #cc0000;;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.collegeform-edit-btn:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+}
 @media (max-width: 768px) {
     .collegeform-card-header {
         flex-direction: column;
@@ -243,3 +274,4 @@
         grid-template-columns: 1fr;
     }
 }
+

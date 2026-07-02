@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import Navbar from "../../Layout/Navbar.jsx";
 import "../../Styles/UserForm.css";
 import axios from "axios";
-//USERFORM CODE//
+
 const CollegeInfo = () => {
   const [formData, setFormData] = useState({
     jeePercentile: "",
@@ -10,10 +9,13 @@ const CollegeInfo = () => {
     class12Marks: "",
     preferredDepartment: "CSE",
   });
+
   const [colleges, setColleges] = useState([]);
   const [error, setError] = useState("");
+  const [searched, setSearched] = useState(false);
 
-  const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+  const BACKEND_URL =
+    import.meta.env.VITE_API_BASE || "http://localhost:3000";
 
   const handleChange = (e) => {
     setFormData({
@@ -23,8 +25,11 @@ const CollegeInfo = () => {
   };
 
   const handleSearch = async () => {
+    setSearched(true);
+
     try {
       setError("");
+
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/user/eligible-colleges`,
         {
@@ -35,15 +40,17 @@ const CollegeInfo = () => {
         },
         {
           withCredentials: true,
-        },
+        }
       );
 
-      console.log("Response:", response.data);
+      console.log(response.data);
 
-      setColleges(response.data.data);
-      setColleges(response.data.data);
+      setColleges(response.data.data || []);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch colleges");
+      setColleges([]);
+      setError(
+        err.response?.data?.message || "Failed to fetch colleges"
+      );
     }
   };
 
@@ -53,7 +60,6 @@ const CollegeInfo = () => {
         <h3 className="college-title">College Information</h3>
 
         <div className="college-row">
-          {/* JEE */}
           <div className="college-field">
             <h4>JEE Percentile</h4>
             <input
@@ -61,7 +67,6 @@ const CollegeInfo = () => {
               name="jeePercentile"
               value={formData.jeePercentile}
               onChange={handleChange}
-              placeholder=""
             />
           </div>
 
@@ -72,7 +77,6 @@ const CollegeInfo = () => {
               name="cuetPercentile"
               value={formData.cuetPercentile}
               onChange={handleChange}
-              placeholder=""
             />
           </div>
 
@@ -83,12 +87,12 @@ const CollegeInfo = () => {
               name="class12Marks"
               value={formData.class12Marks}
               onChange={handleChange}
-              placeholder=""
             />
           </div>
 
           <div className="college-field">
             <h4>Department Name</h4>
+
             <select
               name="preferredDepartment"
               value={formData.preferredDepartment}
@@ -105,52 +109,85 @@ const CollegeInfo = () => {
           </button>
         </div>
 
-        {error && <p style={{ color: "red", marginTop: "15px" }}>{error}</p>}
+        {/* Error */}
+        {error && (
+          <p style={{ color: "red", marginTop: "20px" }}>
+            {error}
+          </p>
+        )}
 
+        {/* College Not Found */}
+        {searched && !error && colleges.length === 0 && (
+          <div className="no-college-found">
+            <h2>😔 College Not Found</h2>
+
+            <p>
+              Sorry! No colleges matched your eligibility criteria.
+              <br />
+              Please try different marks or another department.
+            </p>
+          </div>
+        )}
+
+        {/* College Cards */}
         {colleges.length > 0 && (
           <div className="college-results">
-            <h4 className="result-title">Matching Colleges</h4>
+            <h4 className="result-title">
+              Matching Colleges
+            </h4>
 
             <div className="college-card-container">
               {colleges.map((college) => (
                 <div key={college._id} className="college-card">
                   <div className="college-card-header">
                     <h3>{college.collegeName}</h3>
-                    <span className="college-rank">Rank #{college.rank}</span>
+
+                    <span className="college-rank">
+                      Rank #{college.rank}
+                    </span>
                   </div>
 
                   <div className="college-details">
                     <p>
-                      <strong>Location:</strong> {college.location},{" "}
-                      {college.state}
+                      <strong>Location:</strong>{" "}
+                      {college.location}, {college.state}
                     </p>
 
                     <p>
-                      <strong>College Type:</strong> {college.collegeType}
+                      <strong>College Type:</strong>{" "}
+                      {college.collegeType}
                     </p>
 
                     <p>
-                      <strong>Department:</strong> {college.departmentName}
+                      <strong>Department:</strong>{" "}
+                      {college.departmentName}
                     </p>
 
                     <p>
-                      <strong>JEE Cutoff:</strong> {college.jeeCutoff}
+                      <strong>JEE Cutoff:</strong>{" "}
+                      {college.jeeCutoff}
                     </p>
 
                     <p>
-                      <strong>CUET Cutoff:</strong> {college.cuetCutoff}
+                      <strong>CUET Cutoff:</strong>{" "}
+                      {college.cuetCutoff}
                     </p>
 
                     <p>
-                      <strong>12th Cutoff:</strong> {college.class12Cutoff}%
+                      <strong>12th Cutoff:</strong>{" "}
+                      {college.class12Cutoff}%
                     </p>
 
                     <p>
-                      <strong>Fees:</strong> ₹{college.fees?.toLocaleString()}
+                      <strong>Fees:</strong> ₹
+                      {college.fees?.toLocaleString()}
                     </p>
+
                     <p>
                       <strong>Hostel Available:</strong>{" "}
-                      {college.hostelAvailable ? "Yes" : "No"}
+                      {college.hostelAvailable
+                        ? "Yes"
+                        : "No"}
                     </p>
 
                     <p>
@@ -160,27 +197,32 @@ const CollegeInfo = () => {
 
                     <p>
                       <strong>Boys Hostel:</strong>{" "}
-                      {college.boysHostel ? "Yes" : "No"}
+                      {college.boysHostel
+                        ? "Yes"
+                        : "No"}
                     </p>
 
                     <p>
                       <strong>Girls Hostel:</strong>{" "}
-                      {college.girlsHostel ? "Yes" : "No"}
+                      {college.girlsHostel
+                        ? "Yes"
+                        : "No"}
                     </p>
 
                     <p>
                       <strong>Mess Available:</strong>{" "}
-                      {college.messAvailable ? "Yes" : "No"}
+                      {college.messAvailable
+                        ? "Yes"
+                        : "No"}
                     </p>
-                    <p>
-                      <strong>College Phone:</strong>
 
+                    <p>
+                      <strong>College Phone:</strong>{" "}
                       {college.collegePhone}
                     </p>
 
                     <p>
-                      <strong>Scholarship:</strong>
-
+                      <strong>Scholarship:</strong>{" "}
                       {college.scholarshipAvailable
                         ? "Available ✅"
                         : "Not Available ❌"}
@@ -188,7 +230,9 @@ const CollegeInfo = () => {
 
                     <p>
                       <strong>Verified:</strong>{" "}
-                      {college.verified ? "Yes ✅" : "No ❌"}
+                      {college.verified
+                        ? "Yes ✅"
+                        : "No ❌"}
                     </p>
 
                     <p>
@@ -198,7 +242,9 @@ const CollegeInfo = () => {
 
                     <p>
                       <strong>Verification Date:</strong>{" "}
-                      {new Date(college.verificationDate).toLocaleDateString()}
+                      {new Date(
+                        college.verificationDate
+                      ).toLocaleDateString()}
                     </p>
                   </div>
                 </div>

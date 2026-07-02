@@ -13,8 +13,6 @@ const Main = () => {
 
         <div className="main-img2-container">
 
-          {/* IMAGE TAG */}
-
           <img
             src={MainImage}
             alt="College Banner"

@@ -15,7 +15,7 @@
 }
 
 
-/* ================= TITLE ================= */
+
 
 .college-title {
     font-size: 35px;
@@ -30,7 +30,6 @@
 }
 
 
-/* ================= ROW ================= */
 
 .college-row {
     display: flex;
@@ -43,7 +42,6 @@
 }
 
 
-/* ================= FIELD ================= */
 
 .college-field {
     display: flex;
@@ -79,7 +77,7 @@
 }
 
 
-/* ================= INPUT ================= */
+
 
 .college-field input {
     width: 250px;
@@ -107,8 +105,6 @@
     color: #555;
 }
 
-
-/* ================= BUTTON ================= */
 
 .college-btn {
     height: 60px;
@@ -345,4 +341,25 @@
     .result-title {
         font-size: 24px;
     }
+}
+
+.no-college-found {
+    margin-top: 40px;
+    padding: 35px;
+    background: #FBFADE;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.no-college-found h2 {
+    color: #990B0B;
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.no-college-found p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
 }
