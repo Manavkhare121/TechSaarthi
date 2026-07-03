@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from "./Navbar.jsx";
 import "../Styles/chatbot.css";
@@ -20,6 +20,8 @@ const Chatbot = () => {
   const { chats, activeChatId, messages, input: inputText } = useSelector(
     (state) => state.chat
   );
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -95,6 +97,7 @@ const Chatbot = () => {
       const newChat = response.data?.data || response.data;
       dispatch(startNewChat(newChat));
       dispatch(setMessages([]));
+      setSidebarOpen(false);
     } catch (error) {
       console.error("Error creating new chat:", error);
     }
@@ -103,6 +106,7 @@ const Chatbot = () => {
   const handleSelectChat = (chatId) => {
     dispatch(selectChat(chatId));
     fetchMessages(chatId);
+    setSidebarOpen(false); // mobile pe select karte hi sidebar band ho jaye
   };
 
   const handleDeleteChat = async (e, chatId) => {
@@ -155,7 +159,31 @@ const Chatbot = () => {
   return (
     <>
       <div className="chatpage-main-layout">
+        {/* Mobile pe sidebar khulne par background dim overlay */}
+        {sidebarOpen && (
+          <div
+            className="chatpage-overlay"
+            onClick={() => setSidebarOpen(false)}
+          ></div>
+        )}
+
         <div className="chatpage-container">
+          {/* Mobile top bar - sidebar toggle button + current chat title */}
+          <div className="chatpage-mobile-topbar">
+            <button
+              className="chatpage-sidebar-toggle"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+            <span className="chatpage-mobile-title">
+              {chats.find((c) => c._id === activeChatId)?.title || "TechSaarthi"}
+            </span>
+            <button className="chatpage-mobile-newchat" onClick={handleNewChat}>
+              <i className="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
           <div className="chatpage-chat-box">
             <div className="chatpage-messages">
               {!Array.isArray(messages) || messages.length === 0 ? (
@@ -194,11 +222,20 @@ const Chatbot = () => {
         </div>
 
         {/* ================= SIDEBAR ================= */}
-        <div className="chatpage-sidebar">
-          <button className="chatpage-newchat-btn" onClick={handleNewChat}>
-            <i className="fa-solid fa-plus"></i>
-            New Chat
-          </button>
+        <div className={`chatpage-sidebar ${sidebarOpen ? "open" : ""}`}>
+          <div className="chatpage-sidebar-header">
+            <button className="chatpage-newchat-btn" onClick={handleNewChat}>
+              <i className="fa-solid fa-plus"></i>
+              New Chat
+            </button>
+            {/* Mobile pe sidebar close button */}
+            <button
+              className="chatpage-sidebar-close"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
 
           <div className="chatpage-chat-list">
             {Array.isArray(chats) &&

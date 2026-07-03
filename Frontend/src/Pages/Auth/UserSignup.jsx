@@ -7,7 +7,7 @@ import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 const Usersignup = () => {
   const navigate = useNavigate();
-  const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+  const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

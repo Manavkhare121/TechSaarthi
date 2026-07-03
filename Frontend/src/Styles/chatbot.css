@@ -1,24 +1,22 @@
-
-
 .chatpage-main-layout {
   display: flex;
   gap: 20px;
   width: 100%;
-  /* height: 100vh; */
   overflow: hidden;
+  position: relative;
 }
 
 
 .chatpage-container {
   width: 90%;
   max-width: 1400px;
-  /* height: calc(100vh - 120px); */
-  height:74vh;
+  height: 74vh;
   background-color: white;
   border-radius: 15px;
   margin: 80px 0 20px 20px;
   padding: 10px;
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -35,8 +33,7 @@
 .chatpage-sidebar {
   flex: 0 0 250px;
   max-width: 280px;
-  /* height: calc(100vh - 120px); */
-  height:74vh;
+  height: 74vh;
   background: white;
   border-radius: 10px;
   padding: 20px;
@@ -44,6 +41,16 @@
   flex-direction: column;
   gap: 15px;
   margin: 80px 20px 0 0;
+}
+
+.chatpage-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chatpage-sidebar-close {
+  display: none;
 }
 
 
@@ -67,6 +74,12 @@
   align-items: center;
 }
 
+.chatpage-chat-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .chatpage-chat-item.active {
   background-color: #F09C27;
   font-weight: bold;
@@ -76,6 +89,8 @@
   cursor: pointer;
   color: #d9534f;
   transition: color 0.2s ease-in-out;
+  flex-shrink: 0;
+  margin-left: 8px;
 }
 
 .chatpage-delete-icon:hover {
@@ -195,7 +210,7 @@
   background-color: #F09C27;
   border: none;
   outline: none;
-  width: 100%;
+  flex: 1;
   height: 60px;
   border-radius: 15px;
   font-size: 25px;
@@ -214,7 +229,21 @@
   transition: 0.3s;
 }
 
+/* ============================
+   MOBILE TOP BAR (hidden on desktop)
+============================= */
+.chatpage-mobile-topbar {
+  display: none;
+}
 
+.chatpage-overlay {
+  display: none;
+}
+
+
+/* ============================
+   RESPONSIVE - ChatGPT style sidebar
+============================= */
 @media (max-width: 900px) {
   .chatpage-main-layout {
     flex-direction: column;
@@ -224,18 +253,115 @@
 
   .chatpage-container {
     width: 100%;
-    height: 70vh;
+    height: 80vh;
     margin: 80px 0 0 0;
+    padding: 0;
   }
 
-  .chatpage-sidebar {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    margin: 0;
+  .chatpage-chat-box {
+    padding: 0 10px 10px 10px;
+  }
+
+  /* Mobile top bar dikhega - hamburger + title + new chat */
+  .chatpage-mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .chatpage-sidebar-toggle,
+  .chatpage-mobile-newchat {
+    background: #F09C27;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chatpage-sidebar-toggle i,
+  .chatpage-mobile-newchat i {
+    color: black;
+    font-size: 1.1rem;
+  }
+
+  .chatpage-mobile-title {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
   }
 
   .chatpage-message {
     max-width: 85%;
+  }
+
+  /* Sidebar ChatGPT jaisa slide-in drawer ban jaata hai */
+  .chatpage-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 260px;
+    max-width: 80vw;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    z-index: 1000;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+    transition: left 0.3s ease;
+  }
+
+  .chatpage-sidebar.open {
+    left: 0;
+  }
+
+  .chatpage-sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f1f1;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .chatpage-sidebar-close i {
+    font-size: 1.1rem;
+    color: black;
+  }
+
+  /* Sidebar khulte waqt background dim */
+  .chatpage-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatpage-message {
+    max-width: 90%;
+  }
+
+  .chatpage-container {
+    height: 78vh;
   }
 }

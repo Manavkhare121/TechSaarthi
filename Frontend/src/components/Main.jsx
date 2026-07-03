@@ -19,7 +19,7 @@ const Main = () => {
             className="main-img2"
           />
 
-          {/* CONTENT OVER IMAGE */}
+         
 
           <div className="main-box2">
 

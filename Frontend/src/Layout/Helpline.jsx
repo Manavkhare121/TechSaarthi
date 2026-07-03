@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import "../Styles/Helpline.css"
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
 
 const Helpline = () => {
   const [query, setQuery] = useState("");

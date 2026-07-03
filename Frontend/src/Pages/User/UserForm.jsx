@@ -15,7 +15,7 @@ const CollegeInfo = () => {
   const [searched, setSearched] = useState(false);
 
   const BACKEND_URL =
-    import.meta.env.VITE_API_BASE || "http://localhost:3000";
+    import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
 
   const handleChange = (e) => {
     setFormData({
