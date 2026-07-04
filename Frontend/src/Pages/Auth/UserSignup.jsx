@@ -5,6 +5,7 @@ import GoogleLogo from "../../assets/GoogleLogo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
+
 const Usersignup = () => {
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
@@ -30,7 +31,7 @@ const Usersignup = () => {
         },
         {
           withCredentials: true,
-        },
+        }
       );
 
       console.log(response.data);
@@ -126,20 +127,32 @@ const Usersignup = () => {
             </p>
           </div>
 
-          <div className="usersignup-btn2">
+          {/* Styled Google Signup Button */}
+          <div
+            className="usersignup-btn2"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              marginTop: "15px",
+            }}
+          >
             <GoogleLogin
+              size="large"
+              width="320" // Login page ki tarah isko bhi adjust kar sakte hain 
+              theme="outline"
+              text="signup_with" // Text yahan 'signup_with' kar diya hai
+              shape="rectangular"
               onSuccess={async (credentialResponse) => {
                 try {
                   const response = await axios.post(
                     `${BACKEND_URL}/api/v1/auth/google`,
-
                     {
                       credential: credentialResponse.credential,
                     },
-
                     {
                       withCredentials: true,
-                    },
+                    }
                   );
 
                   console.log(response.data);

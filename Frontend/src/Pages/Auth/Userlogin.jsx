@@ -25,7 +25,7 @@ const Userlogin = ({ setRole }) => {
         },
         {
           withCredentials: true,
-        },
+        }
       );
 
       console.log(response.data);
@@ -103,20 +103,32 @@ const Userlogin = ({ setRole }) => {
                 </p>
               </div>
 
-              <div className="userlogin-google-btn">
+              {/* Google Button Wrapper with Flexbox for Centering */}
+              <div
+                className="userlogin-google-btn"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                  marginTop: "15px",
+                }}
+              >
                 <GoogleLogin
+                  size="large"
+                  width="320" // Is number ko kam ya zyada karke apne RED button ke barabar set kar lijiye
+                  theme="outline"
+                  text="continue_with"
+                  shape="rectangular"
                   onSuccess={async (credentialResponse) => {
                     try {
                       const response = await axios.post(
                         `${BACKEND_URL}/api/v1/auth/google`,
-
                         {
                           credential: credentialResponse.credential,
                         },
-
                         {
                           withCredentials: true,
-                        },
+                        }
                       );
 
                       console.log(response.data);
