@@ -5,42 +5,58 @@ import GoogleLogo from "../../assets/GoogleLogo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
+import Swal from "sweetalert2";
 
 const Userlogin = ({ setRole }) => {
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+  const email = e.target.email.value;
+  const password = e.target.password.value;
 
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      console.log(response.data);
-      const userRole = response.data.data.user.role;
-      localStorage.setItem("userRole", userRole);
-      if (setRole) {
-        setRole(userRole);
+  try {
+    const response = await axios.post(
+      `${BACKEND_URL}/api/v1/auth/login`,
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
       }
+    );
 
-      navigate("/About");
-    } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
+    const userRole = response.data.data.user.role;
+
+    localStorage.setItem("userRole", userRole);
+
+    if (setRole) {
+      setRole(userRole);
     }
-  };
 
+    await Swal.fire({
+      icon: "success",
+      title: "Login Successful",
+      text: "Welcome Back!",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    navigate("/About");
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Login Failed",
+      text:
+        error.response?.data?.message ||
+        "Invalid email or password",
+      confirmButtonColor: "#d33",
+    });
+  }
+};
   return (
     <div className="userlogin-page">
       <div className="userlogin-container">

@@ -139,9 +139,9 @@ const Usersignup = () => {
           >
             <GoogleLogin
               size="large"
-              width="320" // Login page ki tarah isko bhi adjust kar sakte hain 
+              width="320" 
               theme="outline"
-              text="signup_with" // Text yahan 'signup_with' kar diya hai
+              text="signup_with" 
               shape="rectangular"
               onSuccess={async (credentialResponse) => {
                 try {

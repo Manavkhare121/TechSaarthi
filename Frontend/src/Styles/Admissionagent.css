@@ -1,6 +1,6 @@
 .aa-wrapper {
   position: fixed;
-  bottom: 24px;
+  bottom: 24px; /* 👈 Yahan 24px ko change karke 100px (ya apni pasand ki value) kar dein */
   right: 24px;
   z-index: 9999;
   display: flex;
@@ -183,4 +183,10 @@
 
 .aa-toggle-btn:hover {
   transform: scale(1.07);
+}
+
+@media(max-width:768px){
+    .aa-wrapper{
+        bottom:90px;
+    }
 }
