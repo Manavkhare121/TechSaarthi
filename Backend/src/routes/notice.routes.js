@@ -21,8 +21,6 @@ router.route("/upload-notice").post(
 
 
 router.route("/all-notices").get(
-  verifyJWT,
-
   getAllNotices
 );
 

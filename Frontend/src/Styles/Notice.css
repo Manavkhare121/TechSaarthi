@@ -11,7 +11,6 @@
     gap: 20px;
 }
 
-
 /* ================= NOTICE BOX ================= */
 
 .notice-box {
@@ -20,7 +19,6 @@
     display: flex;
     flex-direction: column;
 }
-
 
 /* ================= HEADER ================= */
 
@@ -42,7 +40,6 @@
     padding: 5px;
 }
 
-
 /* ================= ALERT LIST ================= */
 
 .alerts-list {
@@ -53,7 +50,6 @@
     gap: 20px;
 }
 
-
 /* ================= LOADING ================= */
 
 .notice-loading {
@@ -62,7 +58,6 @@
     font-size: 16px;
     padding: 30px 0;
 }
-
 
 /* ================= ALERT ITEM ================= */
 
@@ -80,8 +75,7 @@
     box-sizing: border-box;
 }
 
-
-/* ================= VIEW BUTTON (inline link style) ================= */
+/* ================= VIEW BUTTON ================= */
 
 .notice-view-btn {
     background: none;
@@ -99,7 +93,6 @@
     text-decoration: underline;
 }
 
-
 /* ================= TIME ================= */
 
 .alert-time {
@@ -108,10 +101,7 @@
     white-space: nowrap;
 }
 
-
-/* ====================================================
-   MODAL
-   ==================================================== */
+/* ================= MODAL ================= */
 
 .notice-overlay {
     position: fixed;
@@ -175,6 +165,10 @@
     flex-shrink: 0;
 }
 
+.notice-modal-header img {
+    height: 36px;
+}
+
 .notice-modal-body {
     flex: 1;
     overflow: auto;
@@ -195,10 +189,52 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-    padding: 40px;
+    padding: 40px 20px;
+    text-align: center;
     color: #555;
     font-size: 16px;
 }
+
+/* ================= FILE ICONS ================= */
+
+.notice-file-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.notice-pdf-icon {
+    color: #e74c3c;
+}
+
+.notice-word-icon {
+    color: #2980b9;
+}
+
+/* ================= MODAL TEXT ================= */
+
+.notice-modal-title {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.notice-modal-text {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* ================= PREVIEW IMAGE ================= */
+
+.notice-preview-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ================= DOWNLOAD BUTTON ================= */
 
 .notice-download-btn {
     background: #F09C27;
@@ -217,10 +253,36 @@
     background: #d4861f;
 }
 
+/* Used for PDF / DOC buttons */
+
+.notice-download-btn-blue {
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.notice-download-btn-blue:hover {
+    background: #005ecb;
+}
+
+/* ================= NO DOCUMENT ================= */
+
+.notice-no-document {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #555;
+}
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
+
     .notice-container {
         width: 95%;
         padding: 15px;
@@ -247,5 +309,19 @@
 
     .notice-iframe {
         min-height: 50vh;
+    }
+
+    .notice-modal-title {
+        font-size: 20px;
+    }
+
+    .notice-file-icon {
+        font-size: 50px;
+    }
+
+    .notice-download-btn,
+    .notice-download-btn-blue {
+        width: 100%;
+        justify-content: center;
     }
 }

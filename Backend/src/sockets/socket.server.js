@@ -16,7 +16,11 @@ import { chatmodel } from "../models/chat.model.js";
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: [
+      "http://localhost:5173",
+      "https://techsaarthi-frontend.onrender.com",
+      "https://techsaarthi.onrender.com"
+    ],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
     },

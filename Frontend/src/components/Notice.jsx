@@ -7,9 +7,7 @@ const Notice = () => {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [selectedNotice, setSelectedNotice] = useState(null);
 
-  const BACKEND_URL =
-    import.meta.env.VITE_API_BASE ||
-    "https://techsaarthi.onrender.com";
+  const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
 
   function timeAgo(dateStr) {
     const now = new Date();
@@ -26,37 +24,24 @@ const Notice = () => {
     setFetchLoading(true);
 
     try {
-      const res = await fetch(
-        `${BACKEND_URL}/api/v1/notice/all-notices`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${BACKEND_URL}/api/v1/notice/all-notices`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
       if (!res.ok) {
-        const isJson = res.headers
-          .get("content-type")
-          ?.includes("application/json");
-
+        const isJson = res.headers.get("content-type")?.includes("application/json");
         const data = isJson ? await res.json() : null;
-
-        throw new Error(
-          data?.message || `HTTP Error ${res.status}`
-        );
+        throw new Error(data?.message || `HTTP Error ${res.status}`);
       }
 
       const data = await res.json();
-
       setNotices(data.data || []);
     } catch (err) {
-      console.error(
-        "Error fetching notices:",
-        err.message
-      );
+      console.error("Error fetching notices:", err.message);
     } finally {
       setFetchLoading(false);
     }
@@ -75,12 +60,45 @@ const Notice = () => {
 
     window.addEventListener("keydown", handleKey);
 
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handleKey
-      );
+    return () => window.removeEventListener("keydown", handleKey);
   }, []);
+
+  const renderModalBody = () => {
+    if (!selectedNotice.document) {
+      return <p className="notice-no-doc">No document attached.</p>;
+    }
+
+    const doc = selectedNotice.document;
+
+    if (doc.endsWith(".pdf")) {
+      return (
+        <div className="notice-modal-fallback">
+          <i className="fa-solid fa-file-pdf notice-icon notice-icon-pdf"></i>
+          <h3 className="notice-fallback-heading">PDF Document</h3>
+          <p className="notice-fallback-text">Click below to read or download the notice.</p>
+          <a href={doc} target="_blank" rel="noopener noreferrer" className="notice-download-btn">
+            <i className="fa-solid fa-book-open"></i> Read Full Notice
+          </a>
+        </div>
+      );
+    }
+
+    if (doc.includes("cloudinary")) {
+      return (
+        <img src={doc} alt={selectedNotice.title} className="notice-modal-image" />
+      );
+    }
+
+    return (
+      <div className="notice-modal-fallback">
+        <i className="fa-solid fa-file-word notice-icon notice-icon-word"></i>
+        <p className="notice-fallback-text">Preview not available for this file type.</p>
+        <a href={doc} target="_blank" rel="noopener noreferrer" className="notice-download-btn">
+          <i className="fa-solid fa-download"></i> Download Document
+        </a>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -93,35 +111,22 @@ const Notice = () => {
 
           <div className="alerts-list">
             {fetchLoading ? (
-              <div className="notice-loading">
-                Loading notices...
-              </div>
+              <div className="notice-loading">Loading notices...</div>
             ) : notices.length === 0 ? (
-              <div className="notice-loading">
-                No notices available.
-              </div>
+              <div className="notice-loading">No notices available.</div>
             ) : (
               notices.map((notice) => (
-                <div
-                  className="alert-item"
-                  key={notice._id}
-                >
+                <div className="alert-item" key={notice._id}>
                   <span>
                     {notice.title}
-
                     <button
                       className="notice-view-btn"
-                      onClick={() =>
-                        setSelectedNotice(notice)
-                      }
+                      onClick={() => setSelectedNotice(notice)}
                     >
                       Click Here to View
                     </button>
                   </span>
-
-                  <span className="alert-time">
-                    {timeAgo(notice.createdAt)}
-                  </span>
+                  <span className="alert-time">{timeAgo(notice.createdAt)}</span>
                 </div>
               ))
             )}
@@ -129,179 +134,22 @@ const Notice = () => {
         </div>
       </div>
 
-      {/* Modal */}
-
       {selectedNotice && (
-        <div
-          className="notice-overlay"
-          onClick={() =>
-            setSelectedNotice(null)
-          }
-        >
-          <div
-            className="notice-modal"
-            onClick={(e) =>
-              e.stopPropagation()
-            }
-          >
+        <div className="notice-overlay" onClick={() => setSelectedNotice(null)}>
+          <div className="notice-modal" onClick={(e) => e.stopPropagation()}>
             <button
               className="notice-modal-close"
-              onClick={() =>
-                setSelectedNotice(null)
-              }
+              onClick={() => setSelectedNotice(null)}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
 
             <div className="notice-modal-header">
-              <img
-                src={Notification}
-                alt=""
-                style={{ height: "36px" }}
-              />
-
-              <span>
-                {selectedNotice.title}
-              </span>
+              <img src={Notification} alt="" className="notice-modal-header-icon" />
+              <span>{selectedNotice.title}</span>
             </div>
 
-            <div className="notice-modal-body">
-              {selectedNotice.document ? (
-                selectedNotice.document.endsWith(
-                  ".pdf"
-                ) ? (
-                  <div
-                    className="notice-modal-fallback"
-                    style={{
-                      textAlign: "center",
-                      padding: "40px 20px",
-                    }}
-                  >
-                    <i
-                      className="fa-solid fa-file-pdf"
-                      style={{
-                        fontSize: "60px",
-                        color: "#e74c3c",
-                        marginBottom: "15px",
-                      }}
-                    ></i>
-
-                    <h3
-                      style={{
-                        marginBottom: "10px",
-                        color: "#333",
-                      }}
-                    >
-                      PDF Document
-                    </h3>
-
-                    <p
-                      style={{
-                        color: "#666",
-                        marginBottom: "20px",
-                      }}
-                    >
-                      Click below to read or
-                      download the notice.
-                    </p>
-
-                    <a
-                      href={selectedNotice.document}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="notice-download-btn"
-                      style={{
-                        padding: "10px 20px",
-                        backgroundColor:
-                          "#007bff",
-                        color: "#fff",
-                        borderRadius: "5px",
-                        textDecoration:
-                          "none",
-                        display:
-                          "inline-block",
-                      }}
-                    >
-                      <i className="fa-solid fa-book-open"></i>{" "}
-                      Read Full Notice
-                    </a>
-                  </div>
-                ) : selectedNotice.document.includes(
-                    "cloudinary"
-                  ) ? (
-                  <img
-                    src={
-                      selectedNotice.document
-                    }
-                    alt={
-                      selectedNotice.title
-                    }
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "contain",
-                    }}
-                  />
-                ) : (
-                  <div
-                    className="notice-modal-fallback"
-                    style={{
-                      textAlign: "center",
-                      padding: "40px 20px",
-                    }}
-                  >
-                    <i
-                      className="fa-solid fa-file-word"
-                      style={{
-                        fontSize: "60px",
-                        color: "#2980b9",
-                        marginBottom: "15px",
-                      }}
-                    ></i>
-
-                    <p
-                      style={{
-                        color: "#666",
-                        marginBottom: "20px",
-                      }}
-                    >
-                      Preview not available
-                      for this file type.
-                    </p>
-
-                    <a
-                      href={selectedNotice.document}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="notice-download-btn"
-                      style={{
-                        padding: "10px 20px",
-                        backgroundColor:
-                          "#007bff",
-                        color: "#fff",
-                        borderRadius: "5px",
-                        textDecoration:
-                          "none",
-                        display:
-                          "inline-block",
-                      }}
-                    >
-                      <i className="fa-solid fa-download"></i>{" "}
-                      Download Document
-                    </a>
-                  </div>
-                )
-              ) : (
-                <p
-                  style={{
-                    textAlign: "center",
-                    padding: "20px",
-                  }}
-                >
-                  No document attached.
-                </p>
-              )}
-            </div>
+            <div className="notice-modal-body">{renderModalBody()}</div>
           </div>
         </div>
       )}
