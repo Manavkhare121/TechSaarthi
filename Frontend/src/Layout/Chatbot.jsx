@@ -14,7 +14,9 @@ import {
   addMessage,
   deleteChat
 } from "../store/chatSlice.js";
-                                       
+
+const BACKEND_URL = import.meta.env.VITE_API_BASE || "https://techsaarthi.onrender.com";
+
 const Chatbot = () => {
   const dispatch = useDispatch();
   const { chats, activeChatId, messages, input: inputText } = useSelector(
@@ -25,7 +27,6 @@ const Chatbot = () => {
 
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
-  const BACKEND_URL = "http://localhost:3000";
 
   useEffect(() => {
     socketRef.current = io(BACKEND_URL, {
@@ -106,7 +107,7 @@ const Chatbot = () => {
   const handleSelectChat = (chatId) => {
     dispatch(selectChat(chatId));
     fetchMessages(chatId);
-    setSidebarOpen(false); // mobile pe select karte hi sidebar band ho jaye
+    setSidebarOpen(false);
   };
 
   const handleDeleteChat = async (e, chatId) => {
@@ -159,7 +160,6 @@ const Chatbot = () => {
   return (
     <>
       <div className="chatpage-main-layout">
-        {/* Mobile pe sidebar khulne par background dim overlay */}
         {sidebarOpen && (
           <div
             className="chatpage-overlay"
@@ -168,7 +168,6 @@ const Chatbot = () => {
         )}
 
         <div className="chatpage-container">
-          {/* Mobile top bar - sidebar toggle button + current chat title */}
           <div className="chatpage-mobile-topbar">
             <button
               className="chatpage-sidebar-toggle"
@@ -205,7 +204,6 @@ const Chatbot = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* ================= INPUT BAR ================= */}
             <div className="chatpage-input-bar">
               <input
                 type="text"
@@ -221,14 +219,12 @@ const Chatbot = () => {
           </div>
         </div>
 
-        {/* ================= SIDEBAR ================= */}
         <div className={`chatpage-sidebar ${sidebarOpen ? "open" : ""}`}>
           <div className="chatpage-sidebar-header">
             <button className="chatpage-newchat-btn" onClick={handleNewChat}>
               <i className="fa-solid fa-plus"></i>
               New Chat
             </button>
-            {/* Mobile pe sidebar close button */}
             <button
               className="chatpage-sidebar-close"
               onClick={() => setSidebarOpen(false)}
