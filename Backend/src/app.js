@@ -16,7 +16,11 @@ const app = express();
 app.use(helmetMiddleware);
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+      "http://localhost:5173",
+      "https://techsaarthi-frontend.onrender.com",
+      "https://techsaarthi.onrender.com"
+    ],
   credentials: true,
 }));
 
