@@ -7,6 +7,7 @@
   gap: 40px;
   padding: 0 40px;
   position: relative;
+  transition: 0.3s ease;
 }
 
 .box1 img{
@@ -99,7 +100,17 @@
     width: auto;
   }
 
-  /* Menu button - navbar ke andar, right side, thoda upar (border line ke paas) */
+  .navbar .box1 {
+    transition: 0.25s ease;
+  }
+
+  /* Jab menu open ho, navbar ka logo chhup jaaye */
+  .navbar.menu-open .box1 {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* ===== Hamburger button ===== */
   .menu-btn {
     display: flex;
     flex-direction: column;
@@ -123,32 +134,66 @@
     width: 100%;
     background: #F09C27;
     border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
   }
 
-  /* Dropdown - navbar ke bilkul niche, full width */
+  /* Hamburger -> X animation */
+  .menu-btn.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .menu-btn.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-btn.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* ===== Fullscreen stylish mobile menu ===== */
   .mobile-menu {
     display: flex;
     flex-direction: column;
     list-style: none;
-    padding: 0;
+    padding: 100px 30px 30px;
     margin: 0;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
-    background: #fff;
-    border: 1px solid #F09C27;
-    border-top: none;
-    z-index: 25;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(6px);
+    z-index: 20;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+  }
+
+  .mobile-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 
   .mobile-menu li {
-    padding: 14px 20px;
-    font-weight: 600;
+    padding: 18px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
     cursor: pointer;
     border-bottom: 1px solid #f0f0f0;
-    transition: 0.3s;
+
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.35s ease, transform 0.35s ease, color 0.3s;
+    transition-delay: calc(var(--i) * 0.06s);
+  }
+
+  .mobile-menu.show li {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .mobile-menu li:last-child {
@@ -156,7 +201,6 @@
   }
 
   .mobile-menu li:hover {
-    background: #fff7ec;
     color: #F09C27;
   }
 }

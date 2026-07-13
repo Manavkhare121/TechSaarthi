@@ -7,12 +7,14 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  padding: 20px 0;
 }
 
 .userlogin-container {
   width: 90%;
   max-width: 1000px;
   height: 85vh;
+  min-height: 600px;
   background-color: #F09C27;
   border-radius: 15px;
   display: flex;
@@ -22,7 +24,8 @@
   padding: 30px;
 }
 
-.userlogin-box1 img{
+.userlogin-box1 {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +38,7 @@
   height: auto;
   object-fit: contain;
 }
+
 .userlogin-box2 {
   flex: 1;
   display: flex;
@@ -43,12 +47,17 @@
   padding: 40px;
 }
 
+.userlogin-form {
+  width: 100%;
+  max-width: 430px;
+}
+
 .userlogin-login {
   margin-bottom: 20px;
 }
 
 .userlogin-login h3 {
-  font-size: 70px;
+  font-size: clamp(40px, 5vw, 70px);
   font-weight: 600;
   color: #990B0B;
   line-height: 1;
@@ -61,15 +70,12 @@
   margin-top: 10px;
 }
 
-
-
 .userlogin-input-box {
   margin-top: 10px;
 }
 
 .userlogin-input-box input {
   width: 100%;
-  max-width: 430px;
   height: 40px;
   background-color: #FBFADE;
   border-radius: 15px;
@@ -77,7 +83,8 @@
   outline: none;
   color: black;
   padding: 0 15px;
-  font-size: 20px;
+  font-size: 18px;
+  box-sizing: border-box;
 }
 
 .userlogin-input-box input::placeholder {
@@ -88,17 +95,14 @@
 
 .userlogin-option {
   width: 100%;
-  max-width: 430px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: 10px;
 }
 
 .userlogin-remember {
-
   font-size: 15px;
-
   color: black;
   display: flex;
   align-items: center;
@@ -106,14 +110,13 @@
 }
 
 .userlogin-forgot {
-
   text-decoration: none;
   color: black;
+  font-size: 15px;
 }
 
 .userlogin-btn {
   width: 100%;
-  max-width: 430px;
   height: 45px;
   background-color: #990B0B;
   border-radius: 15px;
@@ -128,33 +131,30 @@
 }
 
 .userlogin-btn:hover {
-
   transform: translateY(-2px);
 }
 
 .userlogin-sign-up {
-  margin-top: 10px;
+  margin-top: 15px;
   text-align: center;
   font-weight: 500;
   font-size: 15px;
 }
 
-.userlogin-sign-up a {
+.userlogin-sign-up a,
+.userlogin-sign-up span {
   color: white;
   text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-.userlogin-sign-up a:hover {
+.userlogin-sign-up span:hover {
   text-decoration: underline;
 }
 
-.userlogin-sign-up span{
-    cursor: pointer;
-    color: white;
-}
 .userlogin-login-with p {
   width: 100%;
-  max-width: 430px;
   text-align: center;
   border-bottom: 1px solid #000;
   line-height: 0.1em;
@@ -163,55 +163,75 @@
 
 .userlogin-login-with p span {
   background: #F09C27;
-  padding: 0 20px;
+  padding: 0 15px;
+  color: black;
+  font-weight: 500;
 }
-.userlogin-btn2 {
+
+.userlogin-google-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  max-width: 430px;
-  height: 45px;
-  background-color: #FBFADE;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
+  margin-top: 15px;
 }
 
-.userlogin-btn2:hover {
-  transform: translateY(-2px);
-}
-
-.userlogin-img4 {
-  height: 40px;
-  width: 40px;
-  object-fit: contain;
-}
+/* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
-
   .userlogin-container {
-
     flex-direction: column;
-
     height: auto;
-
     padding: 30px 20px;
   }
 
+  .userlogin-box1 {
+    padding: 10px;
+  }
+
+  .userlogin-img3 {
+    max-width: 300px;
+  }
+
   .userlogin-box2 {
-
     width: 100%;
-
-    padding: 20px;
+    padding: 20px 0;
+    align-items: center;
   }
 
-  .userlogin-login h3 {
-
-    font-size: 50px;
+  .userlogin-login {
+    text-align: center;
   }
 
-  .userlogin-input-box input,
-  .userlogin-btn,
-  .userlogin-btn2 {
-    max-width: 100%;
+  .userlogin-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userlogin-input-box,
+  .userlogin-btn-box,
+  .userlogin-option,
+  .userlogin-login-with {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .userlogin-container {
+    padding: 20px 15px;
+  }
+
+  .userlogin-img3 {
+    max-width: 200px;
+  }
+
+  .userlogin-login p {
+    font-size: 14px;
+  }
+
+  .userlogin-remember,
+  .userlogin-forgot {
+    font-size: 13px;
   }
 }

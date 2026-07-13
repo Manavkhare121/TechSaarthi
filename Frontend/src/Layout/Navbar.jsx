@@ -64,7 +64,7 @@ const Navbar = ({ role, setRole }) => {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${menuOpen ? "menu-open" : ""}`}>
       {/* Desktop links */}
       <ul className="menu left">
         <li onClick={() => navigate("/About")}>About Us</li>
@@ -87,7 +87,7 @@ const Navbar = ({ role, setRole }) => {
 
       {/* Mobile hamburger button - top right corner */}
       <button
-        className="menu-btn"
+        className={`menu-btn ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle menu"
       >
@@ -96,20 +96,39 @@ const Navbar = ({ role, setRole }) => {
         <span></span>
       </button>
 
-      {/* Mobile dropdown */}
-      {menuOpen && (
-        <ul className="mobile-menu">
-          <li onClick={() => handleNav("/About")}>About Us</li>
-          {leftLinks.map((link, index) => (
-            <li key={index} onClick={() => handleNav(link.path)}>
-              {link.label}
-            </li>
-          ))}
-          <li onClick={() => handleNav("/Notice")}>Notice</li>
-          <li onClick={handleDetailsClick}>Details</li>
-          <li onClick={handleLogout}>Logout</li>
-        </ul>
-      )}
+      {/* Mobile dropdown - fullscreen stylish menu */}
+      <ul className={`mobile-menu ${menuOpen ? "show" : ""}`}>
+        <li onClick={() => handleNav("/About")} style={{ "--i": 0 }}>
+          About Us
+        </li>
+        {leftLinks.map((link, index) => (
+          <li
+            key={index}
+            onClick={() => handleNav(link.path)}
+            style={{ "--i": index + 1 }}
+          >
+            {link.label}
+          </li>
+        ))}
+        <li
+          onClick={() => handleNav("/Notice")}
+          style={{ "--i": leftLinks.length + 1 }}
+        >
+          Notice
+        </li>
+        <li
+          onClick={handleDetailsClick}
+          style={{ "--i": leftLinks.length + 2 }}
+        >
+          Details
+        </li>
+        <li
+          onClick={handleLogout}
+          style={{ "--i": leftLinks.length + 3 }}
+        >
+          Logout
+        </li>
+      </ul>
     </nav>
   );
 };
